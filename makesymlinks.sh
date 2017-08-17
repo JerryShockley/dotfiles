@@ -9,7 +9,9 @@
 root_dir=~
 dir=$root_dir/dotfiles                    # dotfiles directory
 olddir=$dir/dotfiles_old             # old dotfiles backup directory
-files="gemrc zpreztorc vimrc vim zshrc zshenv zprofile gitignore tmux.conf mongorc.js"    # list of files/folders to symlink in homedir
+iterm2dir=iterm2/schemes
+vimdir=vim/colors
+files="gemrc zpreztorc vimrc zshrc zshenv zprofile gitignore tmux.conf mongorc.js"    # list of files/folders to symlink in homedir
 
 ##########
 
@@ -28,4 +30,10 @@ for file in $files; do
     mv $root_dir/.$file $olddir/
     ln -fs $dir/$file $root_dir/.$file
 done
-echo "Symlinks successfully created!"
+echo -e "Symlinks successfully created!\n"
+
+echo "Copying iTerm2 color schemes to ~/iterm2/schemes"
+cp -v $dir/$iterm2dir/* $root_dir/$iterm2dir/
+
+echo -e "\nCopying vim color schemes to ~/.vim/colors"
+cp -v $dir/$vimdir/* $root_dir/.$vimdir/
