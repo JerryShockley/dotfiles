@@ -13,15 +13,6 @@ export KEYTIMEOUT=1
 export EDITOR=vim
 export VISUAL=$EDITOR
 
-# Use vi editing commands
-bindkey -v
-
-# Load rbenv automatically by appending
-# the following to ~/.zshrc:
-
-if which rbenv > /dev/null; then 
-  eval "$(rbenv init -)"; 
-fi
 
 # 10 second wait if you do something that will delete everything
 setopt RM_STAR_WAIT
@@ -59,10 +50,19 @@ function myip() {
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
-# Starts node version manager: nodenv
-eval "$(nodenv init -)"
+
+# Use vi editing commands
+bindkey -v
 
 ### --> Alias
 #
-alias lj="ls -AahFGl"
-alias sz="source ~/.zshrc"
+
+alias lj="ls -AhFGl"
+alias ljd="lj -a"
+alias so="source ~/.zshrc"
+alias -g zrc="~/.zshrc"
+alias -g vrc="~/.vimrc"
+alias -g prc="~/.zpreztorc"
+alias -g edir="~/src/elixir"
+alias -g bdir="~/src/book_code"
+alias gcc=gcc-7

@@ -15,15 +15,15 @@ zstyle ':prezto:*:*' case-sensitive 'no'
 # Color output (auto set to 'no' on dumb terminals).
 zstyle ':prezto:*:*' color 'yes'
 
-### Format completion messages
-zstyle ':completion:*:messages' format %d
-# Print something when there are no matches
-zstyle ':completion:*:warnings' format 'No matches: %d'
-# Display search type
-zstyle ':completion:*:descriptions' format %B%d%b
-# Group results by search type
-zstyle ':completion:*:-command-:*:(commands|builtins|reserved-words|aliases)' \
-        group-name commands
+# ### Format completion messages
+# zstyle ':completion:*:messages' format %d
+# # Print something when there are no matches
+# zstyle ':completion:*:warnings' format 'No matches: %d'
+# # Display search type
+# zstyle ':completion:*:descriptions' format %B%d%b
+# # Group results by search type
+# zstyle ':completion:*:-command-:*:(commands|builtins|reserved-words|aliases)' \
+#         group-name commands
 
 
 # Set the Zsh modules to load (man zshmodules).
@@ -59,7 +59,7 @@ zstyle ':prezto:load' pmodule \
 #
 
 # Set the key mapping style to 'emacs' or 'vi'.
-zstyle ':prezto:module:editor' keymap 'vi'
+# zstyle ':prezto:module:editor' keymap 'vi'
 
 # Auto convert .... to ../..
 zstyle ':prezto:module:editor' dot-expansion 'yes'
