@@ -73,5 +73,4 @@ fi
 TMPPREFIX="${TMPDIR%/}/zsh"
 
 . $HOME/.asdf/asdf.sh
-
 # . $HOME/.asdf/completions/asdf.bash
