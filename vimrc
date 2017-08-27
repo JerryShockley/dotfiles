@@ -2,7 +2,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Maintainer: 
 "       Jerry Shockley
-"
+ "
 " Version: 
 "       0.9 - 2017-06-19
 "
@@ -61,25 +61,29 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface  {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Set 7 lines to the cursor - when moving vertically using j/k
-set so=7
 
-" Avoid garbled characters in Chinese language windows OS
-let $LANG='en' 
-set langmenu=en
-" source $VIMRUNTIME/delmenu.vim
-" source $VIMRUNTIME/menu.vim
+"  => Window/Pane Management {{{2
 
-" Turn on the WiLd menu
-set wildmenu
+" Set # lines from pane edge to the cursor - when moving vertically using j/k
+set scrolloff=8
+" The minimal number of screen columns to keep to the left and to the
+" right of the cursor.
+set sidescrolloff=15
+" The minimal number of columns to scroll horizontally.
+set sidescroll=1
 
-" Ignore compiled files
-set wildignore=*.o,*~,*.pyc
-if has("win16") || has("win32")
-    set wildignore+=.git\*,.hg\*,.svn\*
-else
-    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
-endif
+" Quicker window movement without the C-w
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+" Make it easier to close and open windows
+nnoremap <C-c> <C-w>c
+
+
+" Open new split panes to right and bottom, which feels more natural
+set splitbelow
+set splitright
 
 " Show line numbers
 set rnu
@@ -93,6 +97,44 @@ set ruler
 
 " Height of the command bar
 set cmdheight=2
+
+" Creates a toggle command toggling between relative and absolute line numbers
+function! NumberToggle()
+  if(&relativenumber == 1)
+    set norelativenumber
+  else
+    set relativenumber
+  endif
+endfunc
+
+" Auto switch to absolute line nums when entering insert mode
+autocmd InsertEnter * set norelativenumber
+
+" Auto switch to absolute line nums when exiting insert mode
+autocmd InsertLeave * set relativenumber
+
+" :how matching brackets when text indicator is over them
+set showmatch 
+
+" How many tenths of a second to blink when matching brackets
+set mat=2
+
+
+" Avoid garbled characters in Chinese language windows OS
+let $LANG='en' 
+set langmenu=en
+
+" Turn on the WiLd menu
+set wildmenu
+
+" Ignore compiled files
+set wildignore=*.o,*~,*.pyc
+if has("win16") || has("win32")
+    set wildignore+=.git\*,.hg\*,.svn\*
+else
+    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
+endif
+
 
 " A buffer becomes hidden when it is abandoned
 set hid
@@ -119,12 +161,6 @@ set lazyredraw
 " For regular expressions turn magic on
 set magic
 
-" Show matching brackets when text indicator is over them
-set showmatch 
-
-" How many tenths of a second to blink when matching brackets
-set mat=2
-
 " No annoying sound on errors
 set noerrorbells
 set novisualbell
@@ -149,20 +185,12 @@ augroup reload_vimrc " {
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
 augroup END " }
 
-" Creates a toggle command toggling between relative and absolute line numbers
-function! NumberToggle()
-  if(&relativenumber == 1)
-    set norelativenumber
-  else
-    set relativenumber
-  endif
-endfunc
-
-" Auto switch to absolute line nums when entering insert mode
-autocmd InsertEnter * set norelativenumber
-
-" Auto switch to absolute line nums when exiting insert mode
-autocmd InsertLeave * set relativenumber
+" Install vim-plug if it isn't already installed
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -550,10 +578,8 @@ Plug 'Shougo/neocomplete.vim'
 Plug 'Shougo/neosnippet.vim'
 " The standard snippets repository for neosnippet
 Plug 'Shougo/neosnippet-snippets'
-" Asynchronous linting and make framework for Neovim/Vim
-Plug 'neomake/neomake'
-" Syntax checking hacks for vim
-Plug 'vim-syntastic/syntastic'
+" Asynchronous Lint Engine runs lint as you type vs when you save
+Plug 'w0rp/ale'
 
 " -- Elixir/Phoenix Language Support
 
@@ -567,7 +593,8 @@ Plug 'c-brenn/phoenix.vim'
 Plug 'tpope/vim-projectionist'
 
 
-
+" -- Color Schemes
+Plug 'lifepillar/vim-solarized8'
 
 
 call plug#end()
@@ -604,8 +631,6 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
-"" --> NeoMake
-autocmd! BufWritePost * Neomake
 
 "" --> NeoComplete
 " SuperTab like snippets behavior.
@@ -699,9 +724,6 @@ let vim_markdown_preview_toggle=2
 
 "" --> vim-gutentags
 let g:gutentags_cache_dir = '~/.tags_cache'
-
-"" --> neomake
-autocmd! BufWritePost * Neomake
 
 "" --> Alchemist.vim
 let g:alchemist_tag_disable = 1

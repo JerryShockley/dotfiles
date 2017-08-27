@@ -10,4 +10,4 @@ if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
 
-path=('/usr/local/bin:/usr/bin:/bin:/Users/jerry/.asdf/shims' $path)
+path=('/Users/jerry/.asdf/shims' $path)
