@@ -1,7 +1,29 @@
-#!/bin/bash
+#!/bin/zsh
 ############################
-# .make.sh
-# This script creates symlinks from the home directory to any desired dotfiles in ~/dotfiles
+# install.sh
+# This script creates the directory ~/dotfiles/dotfiles_old and backs up all
+# files affected by this script into the aforementioned directory
+# unless it already exists in which case if skips the backup stage.
+# This is because if you've previously run the script doing the
+# initial backup all other changes should be saved in git.
+#
+# If you already have a ~/dotfiles directory insure you have committed any changes
+# and pushed those changes. It then replaces any existing ~/.vim with the copy
+# stored in ~/dotfiles. It creates symlinks in ~/ for all of the files listed in the
+# variable files below. This way when you pull changes from the remote and check
+# them out into the working directory any changes will take affect the next time
+# the file is sourced.
+#
+# The Hack font in dotfiles/fonts will need to be added to
+# to the Fontbook mac app so that it can be used within iTerm2 and vim.
+#
+# The color schemes in the dotfiles/iterm2 directory will need to be placed into
+# your iterm2/schemes directory and then you will need press 'CMD-,' to bring
+# up the preferences dialog and select the 'Text' tab and then select the
+# 'Change font' button near the bottom of the dialog and select the
+# Hack font and set the default size to suit your preferences. The
+# in the bottom left click the 'Other Actions' drop-down list box and
+# and click 'Set as default' to save the changes for future sessions.
 ############################
 
 ########## Variables
