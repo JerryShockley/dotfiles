@@ -66,3 +66,5 @@ eval "$(nodenv init -)"
 #
 alias lj="ls -AahFGl"
 alias sz="source ~/.zshrc"
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
