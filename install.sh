@@ -28,7 +28,7 @@
 
 ########## Variables
 
-root_dir=~/testenv
+root_dir=~
 dir=$root_dir/dotfiles                    # dotfiles directory
 olddir=$dir/dotfiles_old             # old dotfiles backup directory
 iterm2dir=iterm2/schemes

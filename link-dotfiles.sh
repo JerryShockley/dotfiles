@@ -6,7 +6,7 @@
 
 ########## Variables
 
-root_dir=~/testenv
+root_dir=~
 dir=$root_dir/dotfiles                    # dotfiles directory
 files="gemrc zpreztorc vimrc zshrc zshenv zprofile gitignore tmux.conf mongorc.js"    # list of files/folders to symlink in homedir
 
