@@ -603,6 +603,25 @@ call plug#end()
 " => Plugin Configs   {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+
+"" --> Ale Asynchronous Lint Engine"
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
+" ALE linting events
+set updatetime=1000
+let g:ale_lint_on_text_changed = 0
+autocmd CursorHold * call ale#Lint()
+autocmd CursorHoldI * call ale#Lint()
+autocmd InsertEnter * call ale#Lint()
+autocmd InsertLeave * call ale#Lint()
+
+    " Move between linting errors
+nnoremap ]r :ALENextWrap<CR>
+nnoremap [r :ALEPreviousWrap<CR>
+
+
 "" --> CtrlP fuzzy search
 set runtimepath^=~/.vim/plugged/ctrlp.vim 
 
