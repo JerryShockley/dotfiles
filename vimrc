@@ -45,6 +45,10 @@ noremap \ ,
 " Fast saving
 nmap <leader>w :w!<cr>
 
+" Increase size of preview window for Fugitive.
+" Note the fugitive plugin must be reloaded for
+" this option.
+set previewheight=25   
 " :W sudo saves the file 
 " (useful for handling the permission-denied error)
 " command W w !sudo tee % > /dev/null
