@@ -71,7 +71,7 @@ endif
 " => VIM user interface  {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"  => Window/Pane Management {{{2
+
 
 " Set # lines from pane edge to the cursor - when moving vertically using j/k
 set scrolloff=8
@@ -126,7 +126,7 @@ autocmd InsertLeave * set relativenumber
 set showmatch 
 
 " How many tenths of a second to blink when matching brackets
-set mat=2
+set mat=5
 
 
 " Avoid garbled characters in Chinese language windows OS
@@ -205,10 +205,23 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo  {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Turn backup off, since most stuff is in SVN, git et.c anyway...
+" Turn backup off, since most stuff is in Git, git et.c anyway...
 set nobackup
 set nowb
 set noswapfile
+
+" When editing a file, always jump to the last known cursor position.
+" Don't do it for commit messages, when the position is invalid, or when
+" inside an event handler (happens when dropping a file on gvim).
+autocmd BufReadPost *
+\ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
+\   exe "normal g`\"" |
+\ endif
+
+" Set syntax highlighting for specific file types
+autocmd BufRead,BufNewFile Appraisals set filetype=ruby
+autocmd BufRead,BufNewFile *.md set filetype=markdown
+autocmd BufRead,BufNewFile .{jscs,jshint,eslint}rc set filetype=json
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -316,6 +329,18 @@ if has("mac") || has("macunix")
   vmap <D-j> <M-j>
   vmap <D-k> <M-k>
 endif
+
+"Use enter to create new lines w/o entering insert mode
+nnoremap <CR> o<Esc>
+"Below is to fix issues with the ABOVE mappings in quickfix window
+autocmd CmdwinEnter * nnoremap <CR> <CR>
+autocmd BufReadPost quickfix nnoremap <CR> <CR>
+
+" Use tab to jump between blocks, because it's easier
+nnoremap <tab> %
+vnoremap <tab> %
+
+
 
 " Stop highlight after searching
 nnoremap <silent> <leader>, :noh<cr>
@@ -439,6 +464,7 @@ function! SetTestFile()
   let t:grb_test_file=@%
 endfunction
 
+
 function! RunTestFile(...)
   if a:0
     let command_suffix = a:1
@@ -497,7 +523,7 @@ endif
 " Colorscheme
 set background=dark
 " colorscheme peaksea
-colorscheme solarized
+colorscheme solarized8_dark_flat
 
 " iTerm2: Automatically Change cursor shape to indicate which mode we're in.
 let &t_SI = "\<Esc>]50;CursorShape=1\x7"
@@ -561,12 +587,17 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 " Helps to end certain structures automatically.
 Plug 'tpope/vim-endwise'
-" Previewing markdown files in a browser - without having to leave Vim.
-Plug 'JamshedVesuna/vim-markdown-preview'
+" 
+Plug 'tpope/vim-markdown'
+" Shows a git diff in the 'gutter'
+Plug 'airblade/vim-gitgutter'
+
+
+" Manages many git functions from within vim
+Plug 'tpope/vim-fugitive'
 
 " -- Navigation Plugs
-
-"Quickly and easily switch between buffers.
+" Quickly and easily switch between buffers.
 Plug 'jlanzarotta/bufexplorer'
 "Fuzzy file, buffer, mru, tag, etc finder.
 Plug 'ctrlpvim/ctrlp.vim'
@@ -589,6 +620,8 @@ Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
 " Asynchronous Lint Engine runs lint as you type vs when you save
 Plug 'w0rp/ale'
+" Run a command and show it's results quickly
+Plug 'thinca/vim-quickrun'
 
 " -- Elixir/Phoenix Language Support
 
@@ -648,16 +681,6 @@ let g:lightline = {
       \   'gitbranch': 'fugitive#head'
       \ },
       \ }
-
-"" --> Syntastic
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
 
 
 "" --> NeoComplete
@@ -745,10 +768,6 @@ let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 "" -->  vinegar.vim
 let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
 
-"" --> vim-markdown-preview
-let vim_markdown_preview_hotkey='<leader>m'
-" let vim_markdown_preview_browser='Google Chrome'
-let vim_markdown_preview_toggle=2
 
 "" --> vim-gutentags
 let g:gutentags_cache_dir = '~/.tags_cache'
