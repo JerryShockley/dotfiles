@@ -56,7 +56,7 @@ bindkey -v
 
 ### --> Alias
 #
-alias lj="ls -AahFGl"
+alias lj="ls -hWFGl"
 alias sz="source ~/.zshrc"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
