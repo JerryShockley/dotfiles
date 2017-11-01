@@ -33,7 +33,7 @@ dir=$root_dir/dotfiles                    # dotfiles directory
 olddir=$dir/dotfiles_old             # old dotfiles backup directory
 iterm2dir=iterm2/schemes
 dir_exists=false
-files="gemrc zpreztorc vimrc zshrc zshenv zprofile gitignore tmux.conf mongorc.js"    # list of files/folders to symlink in homedir
+files=( gemrc zpreztorc vimrc zshrc zshenv zprofile gitignore tmux.conf mongorc.js )    # list of files/folders to symlink in homedir
 
 ##########
 
@@ -49,16 +49,20 @@ fi
 # change to the dotfiles directory
 cd $dir
 
-# move any existing dotfiles in $root_dir to $olddir directory, then create symlinks from the $root_dir to any files in the $dir directory specified in $files
-echo -e "\nMoving any existing dotfiles from $root_dir to $olddir\n"
+echo -e "Files = $files"
+cd $root_dir
 for file in $files; do
-    echo -e "Creating symlink for: $file"
-
-if [ $dir_exists == "false" ]; then
-    mv -n $root_dir/.$file $olddir/
-fi
+    echo -e "\nCreating symlink for: $file"
+    if [ $dir_exists=="false" ]; then
+        # move any existing dotfiles in $root_dir to $olddir directory, then create symlinks from the $root_dir
+        #  to any files in the $dir directory specified in $files
+        echo -e "\nMoving any existing dotfiles from $root_dir to $olddir\n"
+        mv -n $root_dir/.$file $olddir/
+    fi
+    echo -e "\sCreating symbolic link $root_dir/.$file\n"
     ln -fs $dir/$file $root_dir/.$file
 done
+cd $dir
 
 echo -e "\nCopying ~/.vim to $olddir\n"
 rsync -av --exclude "plugged"  $root_dir/.vim/ $olddir/vim
