@@ -89,6 +89,9 @@ nnoremap <C-l> <C-w>l
 " Make it easier to close and open windows
 nnoremap <C-c> <C-w>c
 
+" Delete buffers faster
+nnoremap <leader> d :bd<CR>
+
 
 " Open new split panes to right and bottom, which feels more natural
 set splitbelow
@@ -542,7 +545,8 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 " hi FoldColumn guifg=#666666 guibg=#111111 ctermfg=#e4e4e4 ctermbg=#8a8a8a 
 
 " Turns on an underline for the line containing the cursor
-set cursorline
+" set cursorline
+hi CursorLine term=bold cterm=bold guibg=Grey40 ctermbg=Black
 
 """"""""""""""""""""""""""""""
 " => Status line  {{{2
@@ -584,6 +588,7 @@ Plug 'tpope/vim-repeat'
 " Mappings to easily delete, change and add such surroundings in pairs.
 Plug 'tpope/vim-surround'
 " Pairs of handy bracket mappings
+
 Plug 'tpope/vim-unimpaired'
 " Helps to end certain structures automatically.
 Plug 'tpope/vim-endwise'
@@ -610,16 +615,30 @@ Plug 'burke/matcher'
 
 " -- General Programming Language Support
 
+" asynchronous build and test dispatcher
+Plug 'tpope/vim-dispatch'
+" Multilanguage vim test runner
+Plug 'janko-m/vim-test'
 " A collection of Programming Language Packs for most languagesk40
 Plug 'sheerun/vim-polyglot'
-" Next generation completion framework after neocomplcache
-Plug 'Shougo/neocomplete.vim' 
+" Asynchronous linting and make framework for Neovim/Vim
+Plug 'neomake/neomake' 
+" Dark powered asynchronous completion framework for neovim/Vim8
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+" Tiny replacement for Supertab
+Plug 'neitanod/vim-clevertab'
 " neo-snippet plugin contains neocomplcache snippets source
 Plug 'Shougo/neosnippet.vim'
 " The standard snippets repository for neosnippet
 Plug 'Shougo/neosnippet-snippets'
 " Asynchronous Lint Engine runs lint as you type vs when you save
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
 " Run a command and show it's results quickly
 Plug 'thinca/vim-quickrun'
 
@@ -628,12 +647,17 @@ Plug 'thinca/vim-quickrun'
 " uses alchemist-server to give inside information 
 " about your elixir project in vim.
 Plug 'slashmili/alchemist.vim'
-
 " Elixir web development framework
 Plug 'c-brenn/phoenix.vim'
 " Project config using projections
 Plug 'tpope/vim-projectionist'
 
+" -- Javascript Language Support
+
+" This is a Vim plugin that provides Tern-based JavaScript editing support.
+Plug 'ternjs/tern_for_vim'
+" deoplete.nvim source for javascript
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 
 " -- Color Schemes
 Plug 'lifepillar/vim-solarized8'
@@ -645,23 +669,55 @@ call plug#end()
 " => Plugin Configs   {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+"" --> vim-clevertab
+inoremap <silent><tab> <c-r>=CleverTab#Complete('start')<cr>
+                      \<c-r>=CleverTab#Complete('tab')<cr>
+                      \<c-r>=CleverTab#Complete('neosnippet')<cr>
+                      \<c-r>=CleverTab#Complete('keyword')<cr>
+                      \<c-r>=CleverTab#Complete('omni')<cr>
+                      \<c-r>=CleverTab#Complete('stop')<cr>
+inoremap <silent><s-tab> <c-r>=CleverTab#Complete('prev')<cr>
+
+"" --> deoplete
+let g:deoplete#enable_at_startup = 1
+let g:python3_host_prog='/Users/jerrys/.asdf/shims/python3'
+
+"" --> vim-test
+
+let test#strategy = 'neomake'
+
+nmap <silent> <leader>t :TestNearest<CR>
+nmap <silent> <leader>T :TestFile<CR>
+nmap <silent> <leader>a :TestSuite<CR>
+nmap <silent> <leader>l :TestLast<CR>
+nmap <silent> <leader>g :TestVisit<C-R>
+
+"" --> NeoMake
+" Run make when we save a buffer
+call neomake#configure#automake('rw')
+
+let g:neomake_elixir_enabled_makers = ['mix']
+let g:neomake_open_list = 2
+let g:quickfixsigns_protect_sign_rx = '^neomake_'
+" let g:neomake_verbose = 3
+" let g:neomake_logfile = '/users/jerrys/src/elixir/prototypes/issues/nmake.log'
 
 "" --> Ale Asynchronous Lint Engine"
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+" let g:ale_echo_msg_error_str = 'E'
+" let g:ale_echo_msg_warning_str = 'W'
+" let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
-" ALE linting events
-set updatetime=1000
-let g:ale_lint_on_text_changed = 0
-autocmd CursorHold * call ale#Lint()
-autocmd CursorHoldI * call ale#Lint()
-autocmd InsertEnter * call ale#Lint()
-autocmd InsertLeave * call ale#Lint()
+" " ALE linting events
+" set updatetime=1000
+" let g:ale_lint_on_text_changed = 0
+" autocmd CursorHold * call ale#Lint()
+" autocmd CursorHoldI * call ale#Lint()
+" autocmd InsertEnter * call ale#Lint()
+" autocmd InsertLeave * call ale#Lint()
 
-    " Move between linting errors
-nnoremap ]r :ALENextWrap<CR>
-nnoremap [r :ALEPreviousWrap<CR>
+"     " Move between linting errors
+" nnoremap ]r :ALENextWrap<CR>
+" nnoremap [r :ALEPreviousWrap<CR>
 
 
 "" --> CtrlP fuzzy search
@@ -683,16 +739,12 @@ let g:lightline = {
       \ }
 
 
-"" --> NeoComplete
-" SuperTab like snippets behavior.
+"" --> NeoSnippet
 " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-"imap <expr><TAB>
-" \ pumvisible() ? "\<C-n>" :
-" \ neosnippet#expandable_or_jumpable() ?
-" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
 
 "" --> NeoComplete
 " Disable AutoComplPop.
@@ -773,6 +825,7 @@ let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
 let g:gutentags_cache_dir = '~/.tags_cache'
 
 "" --> Alchemist.vim
+let g:alchemist#elixir_erlang_src = "/usr/local/share/src"
 let g:alchemist_tag_disable = 1
 
 "" --> Matcher"
@@ -802,3 +855,4 @@ if executable('matcher')
 
     endfunction
 end
+
