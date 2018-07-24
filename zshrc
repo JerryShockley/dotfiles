@@ -10,9 +10,9 @@ fpath=(/usr/local/share/zsh-completions $HOME/zprezto/modules/completion/externa
 ###  -->  Exports
 # This makes switching vim modes on command lines faster. It may have unforseen side effects.
 export KEYTIMEOUT=1
-export EDITOR=vim
+export EDITOR=nvim
 export VISUAL=$EDITOR
-
+export ECLIPSE_HOME=$HOME/eclipse-workspace
 
 # 10 second wait if you do something that will delete everything
 setopt RM_STAR_WAIT
@@ -56,6 +56,9 @@ bindkey -v
 
 ### --> Alias
 #
+alias vim=nvim
+alias vi=nvim
+
 alias lj="ls -hWFGl"
 alias sz="source ~/.zshrc"
 
@@ -68,3 +71,6 @@ alias -g prc="~/.zpreztorc"
 alias -g edir="~/src/elixir"
 alias -g bdir="~/src/book_code"
 alias gcc=gcc-7
+
+# eval `ssh-agent`
+ssh-add -A  2>/dev/null
