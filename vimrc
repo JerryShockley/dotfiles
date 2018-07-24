@@ -21,7 +21,7 @@ filetype plugin on
 filetype indent on
 
 " Set path wildcards enable searching the dir subtree when finding files
-set path=**
+set path+=**
 
 " Expand tabs using spaces vs tabs when indenting using '>>'
 set expandtab 
@@ -49,22 +49,11 @@ nmap <leader>w :w!<cr>
 " Note the fugitive plugin must be reloaded for
 " this option.
 set previewheight=25   
-" :W sudo saves the file 
+
+" :Sw sudo saves the file 
 " (useful for handling the permission-denied error)
-" command W w !sudo tee % > /dev/null
+command Sw w !sudo tee expand('%:p') > /dev/null
 
-" The Silver Searcher
-if executable('ag')
-  " Use ag over grep
-  set grepprg=ag
-  set grepformat=%f:%l:%c%m
-  let g:ag_working_path_mode="r"
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
- let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-  " ag is fast enough that CtrlP doesn't need to cache
- let g:ctrlp_use_caching = 1
-endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -88,10 +77,6 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 " Make it easier to close and open windows
 nnoremap <C-c> <C-w>c
-
-" Delete buffers faster
-nnoremap <leader> d :bd<CR>
-
 
 " Open new split panes to right and bottom, which feels more natural
 set splitbelow
@@ -195,6 +180,7 @@ set foldcolumn=2
 augroup reload_vimrc " {
     autocmd!
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
+
 augroup END " }
 
 " Install vim-plug if it isn't already installed
@@ -238,7 +224,7 @@ set smarttab
 
 " 1 tab == 4 spaces
 set shiftwidth=4
-set tabstop=4
+" set tabstop=4
 
 " Linebreak on 500 characters
 set lbr
@@ -259,6 +245,14 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Key Mappings  {{{1
+" """""""""""""""""""""""""""
+if has ('nvim')
+    tnoremap <Esc> <C-\><C-n>
+    tnoremap <C-v><Esc> <Esc>
+endif
+
+" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Moving around, tabs, windows and buffers  {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
@@ -295,6 +289,7 @@ let g:lasttab = 1
 nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
 au TabLeave * let g:lasttab = tabpagenr()
 
+nmap bs :Buffers<CR>
 
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
@@ -302,10 +297,11 @@ map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
+map <leader>lcd :lcd %:p:h<cr>:pwd<cr>
 
 " Specify the behavior when switching between buffers 
 try
-  set switchbuf=useopen,usetab,newtab
+  set switchbuf=useopen
   set stal=2
 catch
 endtry
@@ -400,6 +396,22 @@ map <leader>x :e ~/buffer.md<cr>
 " Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
 
+" Set paths to Python 2 & 3. These may need to be updated
+" as new versions are release.
+let g:python_host_prog = $HOME . '/.asdf/installs/python/2.7.14/bin/python'
+let g:python3_host_prog = $HOME . '/.asdf/installs/python/3.6.2/bin/python'
+
+" :W and :Save will escape a file name and write it
+" command! -bang -nargs=* W :call W(<q-bang>, <q-args>) 
+" command! -bang -nargs=* Save :call Save(<q-bang>, <q-args>) 
+
+" function! W(bang, filename) 
+"     :exe "w".a:bang." ". fnameescape(a:filename) 
+" endfu 
+
+" function! Save(bang, filename) 
+"     :exe "save".a:bang." ". fnameescape(a:filename) 
+" endfu
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions  {{{1
@@ -521,17 +533,35 @@ if !has('gui_running')
 endif
 
 
+if ('nvim')
+    set termguicolors
+    set cursorline
+else
+    " We're using Vim
+    
+    " iTerm2: Automatically Change cursor shape to indicate which mode we're in.
+    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+    let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
+    " Turns on an underline for the line containing the cursor
+    " set cursorline
+    hi CursorLine term=bold cterm=bold guibg=Grey40 ctermbg=Black
+
+    if('gui_running')
+            set t_Co=256
+    else
+
+    endif
+endif
+
+
 " let g:solarized_termcolors=256
 
 " Colorscheme
 set background=dark
 " colorscheme peaksea
 colorscheme solarized8_dark_flat
-
-" iTerm2: Automatically Change cursor shape to indicate which mode we're in.
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 " TMux: Automatically Change cursor shape to indicate which mode we're in.
 " let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
@@ -543,10 +573,6 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 " Set fold column color to grey
 " hi FoldColumn guifg=#666666 guibg=#111111 ctermfg=#e4e4e4 ctermbg=#8a8a8a 
-
-" Turns on an underline for the line containing the cursor
-" set cursorline
-hi CursorLine term=bold cterm=bold guibg=Grey40 ctermbg=Black
 
 """"""""""""""""""""""""""""""
 " => Status line  {{{2
@@ -571,6 +597,9 @@ Plug 'tpope/vim-fugitive'
 " -- Display/Misc Plugs
 " Color scheme
 Plug 'NLKNguyen/papercolor-theme'
+" Plug 'dahu/vimLint'
+
+" -- Search Plugs
 
 " Vim utility scripts
 
@@ -604,14 +633,16 @@ Plug 'tpope/vim-fugitive'
 " -- Navigation Plugs
 " Quickly and easily switch between buffers.
 Plug 'jlanzarotta/bufexplorer'
-"Fuzzy file, buffer, mru, tag, etc finder.
-Plug 'ctrlpvim/ctrlp.vim'
+" Command line fuzzy finder
+Plug 'junegunn/fzf'
+" Vim functions to use fzf to search vim lists (e.g. buffers, marks, etc)
+Plug 'junegunn/fzf.vim'
+" Use your favorite grep tool to start an asynchronous search
+Plug 'mhinz/vim-grepper'
 " Add some sugar to netrw
 Plug 'tpope/vim-vinegar'
 " Auto tag file regeneration
 Plug 'ludovicchabant/vim-gutentags'
-" Fuzzy find matcher similiar to Cmd-T used by CtrlP
-Plug 'burke/matcher'
 
 " -- General Programming Language Support
 
@@ -637,8 +668,6 @@ Plug 'neitanod/vim-clevertab'
 Plug 'Shougo/neosnippet.vim'
 " The standard snippets repository for neosnippet
 Plug 'Shougo/neosnippet-snippets'
-" Asynchronous Lint Engine runs lint as you type vs when you save
-" Plug 'w0rp/ale'
 " Run a command and show it's results quickly
 Plug 'thinca/vim-quickrun'
 
@@ -665,9 +694,41 @@ Plug 'lifepillar/vim-solarized8'
 
 call plug#end()
 
+" Set run time path
+set rtp+=/usr/local/opt/fzf,$VIMRUNTIME
+
+
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin Configs   {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"" -->  vim-grepper
+
+let g:grepper = {}
+let g:grepper.tools = ['grep', 'git', 'rg'] 
+let g:grepper.jump = 1
+
+" let g:grepper.
+
+" Search for current word
+" nnoremap <Leader>* :Grepper -cword -noprompt<CR>
+
+" Search for the current selection
+"
+" nmap gs <plug>(GrepperOperator)
+" xmap gs <plug>(GrepperOperator)
+
+function! SetupCommandAlias(input, output)
+    exec 'cabbrev <expr> '.a:input
+         \ .' ((getcmdtype() is# ":" && getcmdline() is# "'.a:input.'")'
+         \ .'?("'.a:output.'") : ("'.a:input.'"))'
+endfunction
+
+call SetupCommandAlias("grep", "GrepperGrep")
+call SetupCommandAlias("git", "GrepperGit")
+call SetupCommandAlias("rg", "GrepperRg")
+
 
 "" --> vim-clevertab
 inoremap <silent><tab> <c-r>=CleverTab#Complete('start')<cr>
@@ -680,7 +741,10 @@ inoremap <silent><s-tab> <c-r>=CleverTab#Complete('prev')<cr>
 
 "" --> deoplete
 let g:deoplete#enable_at_startup = 1
-let g:python3_host_prog='/Users/jerrys/.asdf/shims/python3'
+if !exists('g:deoplete#omni#input_patterns')
+  let g:deoplete#omni#input_patterns = {}
+endif
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 "" --> vim-test
 
@@ -719,9 +783,8 @@ let g:quickfixsigns_protect_sign_rx = '^neomake_'
 " nnoremap ]r :ALENextWrap<CR>
 " nnoremap [r :ALEPreviousWrap<CR>
 
-
-"" --> CtrlP fuzzy search
-set runtimepath^=~/.vim/plugged/ctrlp.vim 
+"" --> FZF
+nnoremap <C-p> :<C-u>FZF<CR>
 
 "" --> LightLine status line
 let g:lightline = {
@@ -746,57 +809,6 @@ smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
 
 
-"" --> NeoComplete
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 1
-" Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-
-" Define dictionary.
-let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-    \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ 'scheme' : $HOME.'/.gosh_completions'
-        \ }
-
-" Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-" Plugin key-mappings.
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? "\<C-y>" : "\<CR>"
-endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-" Close popup by <Space>.
-"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
-
-" AutoComplPop like behavior.
-"let g:neocomplete#enable_auto_select = 1
-
-" Shell like behavior(not recommended).
-"set completeopt+=longest
-"let g:neocomplete#enable_auto_select = 1
-"let g:neocomplete#disable_auto_complete = 1
-"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
 
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -805,17 +817,12 @@ autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
-" Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
+" Tern 
+if exists('g:plugs["tern_for_vim"]')
+  let g:tern_show_argument_hints = 'on_hold'
+  let g:tern_show_signature_in_pum = 1
+  autocmd FileType javascript setlocal omnifunc=tern#Complete
 endif
-"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-" For perlomni.vim setting.
-" https://github.com/c9s/perlomni.vim
-let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
 "" -->  vinegar.vim
 let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
@@ -828,31 +835,4 @@ let g:gutentags_cache_dir = '~/.tags_cache'
 let g:alchemist#elixir_erlang_src = "/usr/local/share/src"
 let g:alchemist_tag_disable = 1
 
-"" --> Matcher"
-if executable('matcher')
-    let g:ctrlp_match_func = { 'match': 'GoodMatch' }
-
-    function! GoodMatch(items, str, limit, mmode, ispath, crfile, regex)
-
-      " Create a cache file if not yet exists
-      let cachefile = ctrlp#utils#cachedir().'/matcher.cache'
-      if !( filereadable(cachefile) && a:items == readfile(cachefile) )
-        call writefile(a:items, cachefile)
-      endif
-      if !filereadable(cachefile)
-        return []
-      endif
-
-      " a:mmode is currently ignored. In the future, we should probably do
-      " something about that. the matcher behaves like "full-line".
-      let cmd = 'matcher --limit '.a:limit.' --manifest '.cachefile.' '
-      if !( exists('g:ctrlp_dotfiles') && g:ctrlp_dotfiles )
-        let cmd = cmd.'--no-dotfiles '
-      endif
-      let cmd = cmd.a:str
-
-      return split(system(cmd), "\n")
-
-    endfunction
-end
 
