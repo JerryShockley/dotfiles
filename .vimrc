@@ -398,8 +398,8 @@ map <leader>pp :setlocal paste!<cr>
 
 " Set paths to Python 2 & 3. These may need to be updated
 " as new versions are release.
-let g:python_host_prog = $HOME . '/.asdf/installs/python/2.7.14/bin/python'
-let g:python3_host_prog = $HOME . '/.asdf/installs/python/3.6.2/bin/python'
+let g:python_host_prog = $HOME . '/.asdf/installs/python/2.7.15/bin/python'
+let g:python3_host_prog = $HOME . '/.asdf/installs/python/3.7.0/bin/python'
 
 " :W and :Save will escape a file name and write it
 " command! -bang -nargs=* W :call W(<q-bang>, <q-args>) 
@@ -595,6 +595,9 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-fugitive'
 
 " -- Display/Misc Plugs
+"  Make terminal vim and tmux work better together.
+Plug 'tmux-plugins/vim-tmux-focus-events'
+
 " Color scheme
 Plug 'NLKNguyen/papercolor-theme'
 " Plug 'dahu/vimLint'
@@ -626,6 +629,8 @@ Plug 'tpope/vim-markdown'
 " Shows a git diff in the 'gutter'
 Plug 'airblade/vim-gitgutter'
 
+" Manage sessions
+Plug 'tpope/vim-obsession'
 
 " Manages many git functions from within vim
 Plug 'tpope/vim-fugitive'
