@@ -387,12 +387,6 @@ map <leader>s? z=
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
-" Quickly open a buffer for scribble
-map <leader>q :e ~/buffer<cr>
-
-" Quickly open a markdown buffer for scribble
-map <leader>x :e ~/buffer.md<cr>
-
 " Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
 
@@ -598,6 +592,9 @@ Plug 'tpope/vim-fugitive'
 "  Make terminal vim and tmux work better together.
 Plug 'tmux-plugins/vim-tmux-focus-events'
 
+" Enables live previews of markdown files
+Plug 'shime/vim-livedown'
+
 " Color scheme
 Plug 'NLKNguyen/papercolor-theme'
 " Plug 'dahu/vimLint'
@@ -750,6 +747,22 @@ if !exists('g:deoplete#omni#input_patterns')
   let g:deoplete#omni#input_patterns = {}
 endif
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+
+"" --> vim-livedown
+" launch/kill the Livedown server
+nmap gm :LivedownToggle<CR>
+
+" should markdown preview get shown automatically upon opening markdown buffer
+let g:livedown_autorun = 1
+
+" should the browser window pop-up upon previewing
+let g:livedown_open = 1 
+
+" the port on which Livedown server will run
+let g:livedown_port = 1339
+
+" the browser to use
+let g:livedown_browser = "chrome"
 
 "" --> vim-test
 
