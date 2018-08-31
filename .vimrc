@@ -593,7 +593,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 
 " Enables live previews of markdown files
-Plug 'shime/vim-livedown'
+Plug 'JamshedVesuna/vim-markdown-preview'
 
 " Color scheme
 Plug 'NLKNguyen/papercolor-theme'
@@ -621,8 +621,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 " Helps to end certain structures automatically.
 Plug 'tpope/vim-endwise'
-" 
-Plug 'tpope/vim-markdown'
+ 
 " Shows a git diff in the 'gutter'
 Plug 'airblade/vim-gitgutter'
 
@@ -748,21 +747,13 @@ if !exists('g:deoplete#omni#input_patterns')
 endif
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
-"" --> vim-livedown
-" launch/kill the Livedown server
-nmap gm :LivedownToggle<CR>
+"" --> vim-markdown-preview
+let vim_markdown_preview=2
+" let vim_markdown_preview_browser='Google Chrome'
+let vim_markdown_preview_hotkey='<F9>'
+let vim_markdown_preview_github=1
 
-" should markdown preview get shown automatically upon opening markdown buffer
-let g:livedown_autorun = 1
 
-" should the browser window pop-up upon previewing
-let g:livedown_open = 1 
-
-" the port on which Livedown server will run
-let g:livedown_port = 1339
-
-" the browser to use
-let g:livedown_browser = "chrome"
 
 "" --> vim-test
 
@@ -852,5 +843,6 @@ let g:gutentags_cache_dir = '~/.tags_cache'
 "" --> Alchemist.vim
 let g:alchemist#elixir_erlang_src = "/usr/local/share/src"
 let g:alchemist_tag_disable = 1
+
 
 
