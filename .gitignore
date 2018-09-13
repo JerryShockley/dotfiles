@@ -1,3 +1,4 @@
 .DS_Store
 dotfiles_old/
 .vim/.netrwhist
+.vim/plugged
