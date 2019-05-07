@@ -61,13 +61,12 @@ alias vim=nvim
 alias vi=nvim
 
 alias lj="ls -hWFGl"
-alias sz="source ~/.zshrc"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 alias ljd="lj -a"
 alias so="source ~/.zshrc"
 alias -g zrc="~/.zshrc"
-alias -g vrc="~/.vimrc"
+alias -g nviminit="~/.config/nvim/init.vim"
 alias -g prc="~/.zpreztorc"
 alias -g edir="~/src/elixir"
 alias -g bdir="~/src/book_code"
@@ -80,3 +79,5 @@ ssh-add -A  2>/dev/null
 . $HOME/.asdf/asdf.sh
 
 . $HOME/.asdf/completions/asdf.bash
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
