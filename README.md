@@ -1,7 +1,7 @@
 ## Jerry Shockley's Dotfiles 
 
 These file are configuration files used by various other software. In addition to
-installing this configuration files, you must also install the various software 
+installing these configuration files, you must also install the various software 
 applications to make use of them.
 
 
@@ -12,12 +12,12 @@ The default configuration file for Neovim is init.vim. I have 3 additional files
 that are sourced by init.vim to make managing the configuration easier as it's a 
 lot of data for a single file. The file organization is as follows:
 
-1. **init.vim** - This file is the entry point and contains
+1. **init.vim** - This file is the entry point and contains all the Neovim settings.
 1. **plugins.vim** - Leverages vim-plug to manage Neovim plugins. Able to bootstrap
 the plugins by installing/configuring vim-plug and install the specified
 plugins when vim-plug has not been previously installed. In addition to the 
 specifying which plugins to install, it also contains all associated plugin options, key mappings, and code. 
-1. **command.vim** - Contains all ex commands and autocommands.
+1. **command.vim** - Contains all Ex commands and autocommands.
 1. **key_mappings.vim** - Contains all key mappings.
 
 Note that these files should be placed as specified by the [XDG Base Directory Standard](https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html).
