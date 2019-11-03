@@ -43,3 +43,6 @@ context.
 
 **.tmux.conf** - tmux is a terminal multiplexer. This config file will have
 no effect on your system if you aren't using tmux.
+
+###### Gem
+**.gemrc** - Gem is the Ruby package manager.
