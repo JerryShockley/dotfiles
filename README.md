@@ -5,7 +5,7 @@ installing these configuration files, you must also install the various software
 applications to make use of them.
 
 
-#### Dot file mappings
+#### Dotfile mappings
 
 ###### Neovim
 The default configuration file for Neovim is init.vim. I have 3 additional files 
