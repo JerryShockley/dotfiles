@@ -5,6 +5,7 @@ installing these configuration files, you must also install the various software
 applications to make use of them.
 
 ## Installation
+
 With the exception of the Neovim configuration files, you can just put these files
 in your $HOME directory. Neovim uses the [XDG Base Directory Standard](https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html)
 to find it's configuration files.  The Neovim configuration files should be placed 
@@ -26,6 +27,7 @@ $ mv *.vim $HOME/.config/nvim
 ```
 
 ## Neovim configuration files
+
 The default configuration file for Neovim is init.vim. I have 3 additional files 
 that are sourced by init.vim to make managing the configuration easier as it's a 
 lot of data for a single file. The file organization is as follows:
@@ -40,6 +42,7 @@ specifying which plugins to install, it also contains all associated plugin opti
 
 
 ## Zsh and Prezto configuration files
+
 Zsh is one of several alternative shells to bash. Prezto is one of several 
 configuration frameworks for the zsh shell. If you do not use the zsh shell, 
 the configuration files will have no effect on your system. If you use zsh and 
@@ -53,8 +56,10 @@ context.
 1. **.zpreztorc** - Prezto config file
 
 ## Tmux configuration files
+
 **.tmux.conf** - tmux is a terminal multiplexer. This config file will have
 no effect on your system if you aren't using tmux.
 
 ## Gem configuration files
+
 **.gemrc** - Gem is the Ruby package manager.
