@@ -1,8 +1,9 @@
-# Jerry Shockley's Dotfiles 
+# Dotfiles 
 
-These file are configuration files used by various other software. In addition to
-installing these configuration files, you must also install the various software 
-applications to make use of them.
+These files are configuration files used by various other software. These files
+contain my configuration preferences, which may not be the same as your 
+preferences. In addition to installing these configuration files, you must 
+also install the various software applications to make use of them.
 
 ## Installation
 
@@ -63,3 +64,6 @@ no effect on your system if you aren't using tmux.
 ## Gem configuration files
 
 **.gemrc** - Gem is the Ruby package manager.
+
+## Author
+Created and maintained by Jerry Shockley.
