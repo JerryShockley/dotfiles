@@ -126,8 +126,10 @@ else
 endif
 " A buffer becomes hidden when it is abandoned
 set hid
+
 " Configure backspace so it acts as it should act
-set backspace=indent,start
+set backspace=indent,eol,start
+
 " This causes the left and right arrow keys, as well as h and l, to wrap 
 " when used at beginning or end of lines. (  < > are the cursor keys used
 " in normal and visual mode, and [ ] are the cursor keys in insert mode).
