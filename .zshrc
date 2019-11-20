@@ -52,8 +52,11 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-# Use vi editing commands
-bindkey -v
+# Use vi editing commands. This will override Neovim Terminal mode custom
+# mapping of <Esc> as a short cut for <C-\><C-n> for entering Normal mode.
+# In this case, you don't need this option as entering Normal mode
+# inside a terminal buffer gives the full power of Neovim anyway.
+# bindkey -v
 
 ### --> Alias
 #
