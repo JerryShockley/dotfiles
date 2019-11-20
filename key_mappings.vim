@@ -12,9 +12,16 @@ nnoremap \ ,
 " Fast saving
 nnoremap <leader>w :w!<cr>
 
-" Exit insert mode using jk 
-inoremap jk <Esc> 
+" Optional key sequence to enter normal mode from insert mode.
+inoremap jk <Esc>
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Terminal 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Add shortcut to switch from Terminal mode to Normal mode
+tnoremap <Esc> <C-\><C-n>
+" Add a mapping to insert a literal <Esc> character in Terminal Mode
+tnoremap <C-v><Esc> <Esc>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Navigation
