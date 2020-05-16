@@ -30,7 +30,7 @@
 " commands.vim --
 "       Contains all commands and functions except those
 "       specific to a plugin.
-" key_mappings --
+" key_mappings.vim --
 "       Contains all key_mappings except those specific 
 "       to a plugin.
 "
@@ -38,7 +38,7 @@
 " => User Options 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Ensure XDG Base Directory Spec environment variables exist.
-" These are used by default in the runtime path and by
+" These are used by default in the guntime path and by
 " defining them here in init.vim using the default path shown
 " below ensures this configuration file works even if the 
 " user hasn't set the environment variables.
@@ -50,22 +50,37 @@ if empty($XDG_DATA_HOME)
 endif
 
 " Set plugged directory location
-let g:plugged_dir = stdpath('data') . '/site/plugged'
+let plugged_dir = stdpath('data') . '/site/plugged'
 
-" Ensure the plugged and $XDG_DATA_HOME directories exist.
-if !isdirectory(g:plugged_dir)
-    call mkdir(g:plugged_dir, "p", 0700)
+" Turn on auto filetype detection for setting correct soft-tab sizes
+" and indent sizes. Do this prior to loading commands file, so
+" any customizations in that file will override the default.
+filetype plugin indent on
+
+""" Create variables for all configuration files
+let init_file = stdpath('config') . '/init.vim'
+let commands_file = stdpath('config') . '/commands.vim'
+let plugins_file = stdpath('config') . '/plugins.vim'
+let key_mappings_file = stdpath('config') . '/key_mappings.vim'
+
+" Set $MYVIMRC environment variable if not already set.
+if empty($MYVIMRC)
+    let $MYVIMRC = init_file
 endif
 
-" Set not vi compatible as this limits our features
+" Ensure the plugged and $XDG_DATA_HOME directories exist.
+if !isdirectory(plugged_dir)
+    call mkdir(plugged_dir, "p", 0766)
+endif
+
+" Set not vi compatible as this limits our features.
 set nocompatible
 
-execute 'source ' . stdpath('config') . '/commands.vim'
-execute 'source ' . stdpath('config') . '/plugins.vim'
-execute 'source ' . stdpath('config') . '/key_mappings.vim'
+" Source all configuration files.
+execute 'source ' . commands_file
+execute 'source ' . plugins_file
+execute 'source ' . key_mappings_file
 
-
-filetype plugin indent on
 syntax enable
  
 " Sets how many lines of history VIM has to remember
@@ -196,14 +211,6 @@ try
 catch
 endtry
 
-" Set paths to Python 2 & 3. These need to be updated
-" as new versions are released. Updating python versions
-" also requires installing the https://github.com/neovim/pynvim python
-" package using:
-" pip2 install pynvim
-" pip3 install pynvim
-let g:python_host_prog = $HOME . '/.asdf/installs/python/2.7.16/bin/python'
-let g:python3_host_prog = $HOME . '/.asdf/installs/python/3.7.3/bin/python'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Display 
