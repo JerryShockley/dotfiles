@@ -1,11 +1,13 @@
 .DS_Store
 .netrwhist
-.git
-/log
-/tmp
-/vendor
+/.git/
+/.vagrant/
+provisioning/roles/
+/log/
+/tmp/
+/vendor/
 tags
-tmp/**/*
+/tmp/
 /node_modules/
 .env
 .byebug_history
@@ -13,4 +15,3 @@ tmp/**/*
 *.sw[nop]
 .bundle
 /bower_components/
-/vendor
