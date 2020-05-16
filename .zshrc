@@ -63,7 +63,7 @@ fi
 alias vim=nvim
 alias vi=nvim
 
-alias lj="ls -hWFGl"
+alias lj="ls -hHFGl"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 alias ljd="lj -a"
@@ -74,6 +74,7 @@ alias -g prc="~/.zpreztorc"
 alias -g edir="~/src/elixir"
 alias -g bdir="~/src/book_code"
 
+alias rgl="rg -L --hidden"
 # eval `ssh-agent`
 ssh-add -A  2>/dev/null
 
