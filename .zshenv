@@ -29,6 +29,9 @@ LDFLAGS=$LDFLAGS:/usr/local/opt/zlib/lib
 CPPFLAGS=$CPPFLAGS:/usr/local/opt/zlib/include
 PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/opt/zlib/lib/pkgconfig
 
+# XDG Config
+XDG_CONFIG_HOME=$HOME/.config
+XDG_DATA_HOME=$HOME/.local/share
     
 # Sqlite options
 LDFLAGS=$LDFLAGS:usr/local/opt/sqlite/lib
