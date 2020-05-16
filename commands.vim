@@ -1,4 +1,4 @@
-" This file is sourced by init.vim. It conatains all
+"This file is sourced by init.vim. It contains all
 " the non-plugin related functions and commands.
 
 "====================================================
@@ -16,7 +16,7 @@ function! NumberToggle()
 endfunc
  
 "Delete trailing white space
-func! DeleteTrailingWS()
+function! DeleteTrailingWS()
   exe "normal mz"
   %s/\s\+$//ge
   exe "normal `z"
@@ -64,6 +64,7 @@ function! SetupCommandAlias(input, output)
 endfunction
 
 
+
 "====================================================
 " ***  COMMANDS
 "====================================================
@@ -79,29 +80,35 @@ command! Bclose call <SID>BufcloseCloseIt()
 " ***  AUTOCOMMANDS
 "====================================================
 
-" Remove trailing white space before saving buffer
-autocmd BufWrite *.py,*.js,*.jsx,*.yml :call DeleteTrailingWS()
-
-" When editing a file, always jump to the last known cursor position.
-" Don't do it for commit messages, when the position is invalid, or when
-" inside an event handler (happens when dropping a file on gvim).
-autocmd BufReadPost * if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g`\"" | endif
-
-" Return to last edit position when opening files (You want this!)
-" au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-
-" Properly disable sound on errors on MacVim
-if has("gui_macvim")
-    autocmd GUIEnter * set vb t_vb=
-endif
-
-" Auto reload init.vim on change
-augroup reload_vimrc " {
+augroup fix_normal_newline_map
     autocmd!
-    execute 'autocmd BufWritePost' stdpath('config') . '/*.vim source $MYVIMRC'
-augroup END " }
+    " Unmaps <CR> o<Esc> when in command and quickfix windows
+    autocmd CmdwinEnter * nnoremap <CR> <CR>
+    autocmd BufReadPost quickfix nnoremap <CR> <CR>
+augroup END
 
-" Switch to alternate tab
-au TabLeave * let g:lasttab = tabpagenr()
+augroup buff_rw
+    autocmd!
+    " Auto reload init.vim on change
+     autocmd BufWritePost init.vim,commands.vim,plugins.vim,key_mappings.vim nested source $MYVIMRC | echom "Sourcing " . $MYVIMRC
 
+    " Remove trailing white space before saving buffer
+    autocmd BufWrite *.py,*.ts,*.tsx,*.js,*.jsx,*.yml call DeleteTrailingWS()
+
+    " When editing a file, always jump to the last known cursor position.
+    " Don't do it for commit messages, when the position is invalid, or when
+    " inside an event handler (happens when dropping a file on gvim).
+    autocmd BufReadPost * if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g`\"" | endif
+augroup END 
+
+augroup misc
+     autocmd!
+     " Override tab and shift settings for .vim files. 8 is too big!
+     autocmd Filetype vim setlocal shiftwidth=2 softtabstop=2 expandtab
+     " Switch to alternate tab
+    autocmd TabLeave * let g:lasttab = tabpagenr()
+    autocmd FileType html setlocal shiftwidth=2 softtabstop=2 expandtab    
+    autocmd FileType javascript,typescript,jsx,tsx setlocal shiftwidth=2 softtabstop=2 expandtab
+    autocmd FileType css setlocal shiftwidth=2 softtabstop=2 expandtab    
+augroup END
 
