@@ -42,11 +42,6 @@ function myip() {
 	ifconfig en1 | grep 'inet6 ' | sed -e 's/ / /' | awk '{print "en1 (IPv6): " $2 " " $3 " " $4 " " $5 " " $6}'
 }
 
-# load the function-based completion system. Only uncomment if Prezto is removed as Prezto does this.
-# autoload -U compinit
-# compinit
-
-
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
@@ -74,14 +69,17 @@ alias -g prc="~/.zpreztorc"
 alias -g edir="~/src/elixir"
 alias -g bdir="~/src/book_code"
 
+alias al='alias | grep '
 alias rgl="rg -L --hidden"
 # eval `ssh-agent`
 ssh-add -A  2>/dev/null
 
 
-
+# Source asdf.sh
 . $HOME/.asdf/asdf.sh
-
-. $HOME/.asdf/completions/asdf.bash
+# add asdf competions $fpath
+fpath=($HOME/.asdf/completions $fpath)
+# . $HOME/.asdf/completions/asdf.bash
+autoload -Uz compinit && compinit
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
