@@ -1,0 +1,9 @@
+{
+  "snippets.userSnippetsDirectory": "$XDG_CONFIG_HOME/nvim/snippets",
+  "coc.preferences.diagnostic.displayByAle": true,
+  "snippets.extends": {
+    "javascriptreact": ["javascript"],
+    "typescriptreact": ["javascript"],
+    "typescript": ["javascript"]
+  }
+}
