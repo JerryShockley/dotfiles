@@ -13,6 +13,8 @@ to find it's configuration files.  The Neovim configuration files should be plac
 in the directory specified by the environment varible $XDG\_CONFIG\_HOME. If 
 $XDG\_CONFIG\_HOME is undefined, the default path "$HOME/.config" should be used.
 
+I strongly recommend using the [Ansible script](https://github.com/JerryShockley/deploy-dotfiles) I created to deploy configuration files. It saves time and minimizes errors. 
+
 To install via git
 ```bash
 $ cd $HOME
@@ -39,8 +41,11 @@ the plugins by installing/configuring vim-plug and install the specified
 plugins when vim-plug has not been previously installed. In addition to the 
 specifying which plugins to install, it also contains all associated plugin options, key mappings, and code. 
 1. **command.vim** - Contains all Ex commands and autocommands.
-1. **key\_mappings.vim** - Contains all key mappings.
-
+1. **key\_mappings.vim** - Contains all non-plugin related key mappings.
+1. **coc-settings.json** - Contains settings for coc.nvim plugin.
+1. **after/plugin/emmet.vim** - Unmaps emmet plug default mappings after they are set.
+1. **ftplugin/denite-filter.vim** - Maps <Esc> key to exit denite filter.
+1. **ftplugin/denite.vim** -- Maps all denite buffer keys.
 
 ## Zsh and Prezto configuration files
 
