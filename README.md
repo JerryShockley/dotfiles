@@ -15,9 +15,9 @@ $XDG\_CONFIG\_HOME is undefined, the default path "$HOME/.config" should be used
 
 I strongly recommend using the [Ansible script](https://github.com/JerryShockley/deploy-dotfiles) I created to deploy configuration files. It saves time and minimizes errors. 
 
-To install via git
+To install manually via git
 ```bash
-$ cd $HOME
+$ cd <the parent directory you choose for this git clone>
 $ git clone https://github.com/JerryShockley/dotfiles.git
 ```
 Now you will need to move the Neovim configuration files to their proper
