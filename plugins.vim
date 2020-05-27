@@ -25,7 +25,7 @@ let plug_shallow = 0
 " A Vim plugin for Vim plugins
 Plug 'tpope/vim-scriptease'
 " Enables live previews of markdown files
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
+Plug 'shime/vim-livedown'
 
 "" -- Search Plugs
 " easily search for, substitute, and abbreviate multiple variants of a word 
@@ -245,7 +245,7 @@ try
 "   <leader>g - Search current directory for occurences of given term and close window if no results
 "   <leader>j - Search current directory for occurences of word under cursor
 nnoremap <leader>d :Denite buffer file/rec<CR>
-nmap <leader>t :DeniteProjectDir file/rec<CR>
+nnoremap <leader>t :DeniteProjectDir file/rec<CR>
 nnoremap <leader>g :<C-u>Denite grep:. -no-empty<CR>
 " nnoremap <leader>j :<C-u>DeniteCursorWord grep:.<CR>
 
@@ -401,30 +401,22 @@ function! LinterStatus() abort
 endfunction
 
 
+""" --> vim-livedown
+" should markdown preview get shown automatically upon opening markdown buffer
+let g:livedown_autorun = 1
 
-""" -->  markdown-preview.nvim"
-" set to 1, the nvim will open the preview window once enter the markdown buffer
-" default: 0
-let g:mkdp_auto_start = 1
+" should the browser window pop-up upon previewing
+let g:livedown_open = 1
+
+" the port on which Livedown server will run
+let g:livedown_port = 1337
+
+" the browser to use, can also be firefox, chrome or other, depending on your executable
+let g:livedown_browser = "chrome"
 
 
 """ -->  vinegar.vim
 let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
-
-
-""" --> deoplete
-
-" let new_rtp_path = g:plugged_dir.'/deoplete.nvim'
-" exec 'set rtp+=' . new_rtp_path
-" let g:deoplete#enable_at_startup = 1
-" if !exists('g:deoplete#omni#input_patterns')
-"   let g:deoplete#omni#input_patterns = {}
-" endif
-" augroup deoplete
-"   autocmd!
-"   autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-" augroup end
-
 
 
 """ --> coc.nvim
@@ -600,27 +592,6 @@ imap <C-j> <Plug>(coc-snippets-expand-jump)
 ""                       \<c-r>=CleverTab#Complete('stop')<cr>
 "" inoremap <silent><s-tab> <c-r>=CleverTab#Complete('prev')<cr>
 """ --> vim-test
-
-"" let test#strategy = 'neomake'
-
-"" nnoremap <silent> <leader>t :TestNearest<CR>
-"" nnoremap <silent> <leader>T :TestFile<CR>
-"" nnoremap <silent> <leader>a :TestSuite<CR>
-"" nnoremap <silent> <leader>l :TestLast<CR>
-"" nnoremap <silent> <leader>g :TestVisit<C-R>
-
-""" --> NeoMake
-"" Run make when we save a buffer
-"" if exists('neomake#configure#automake')
-""     call neomake#configure#automake('rw', 750)
-"" endif
-
-"" let g:neomake_elixir_enabled_makers = ['mix']
-"" let g:neomake_open_list = 2
-"" let g:quickfixsigns_protect_sign_rx = '^neomake_'
-"" let g:neomake_javascript_enabled_makers = ['eslint']
-"" let g:neomake_verbose = 3
-"" let g:neomake_logfile = '/users/jerrys/src/elixir/prototypes/issues/nmake.log'
 
 
 """ --> FZF
