@@ -4,11 +4,13 @@
 
 " Install vim-plug if it isn't already installed
 if empty(glob(stdpath('data') . '/site/autoload/plug.vim'))
-    let plugurl = '"https://raw.githubusercontent.com/' .
-        \'junegunn/vim-plug/master/plug.vim"'
+    let plugurl = 'https://raw.githubusercontent.com/' .
+        \'junegunn/vim-plug/master/plug.vim'
     let plugdir = stdpath('data') . '/site/autoload/plug.vim'  
    silent execute '!curl -fLo '. plugdir .' --create-dirs '. plugurl  
-   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+   augroup pluginstall
+     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+   augroup end
 endif
 
 
@@ -27,14 +29,13 @@ Plug 'tpope/vim-scriptease'
 " Enables live previews of markdown files
 Plug 'shime/vim-livedown'
 
-"" -- Search Plugs
+" -- Search Plugs
 " easily search for, substitute, and abbreviate multiple variants of a word 
 Plug 'tpope/vim-abolish'
 
-"" -- Vim utility scripts
+" -- Vim utility scripts
 
 " Status line display.  Requires vim-fugitive.
-" Plug 'itchyny/lightline.vim'
 Plug 'rbong/vim-crystalline'
 
 " -- Editing Plugs
@@ -43,7 +44,7 @@ Plug 'rbong/vim-crystalline'
 Plug 'honza/vim-snippets'
 " React snippets
 Plug 'mlaursen/vim-react-snippets'
-"" Comments stuff out.
+" Comments stuff out.
 Plug 'tpope/vim-commentary'
 " Insert or delete brackets, parens, quotes in pair.
 Plug 'jiangmiao/auto-pairs'
@@ -54,6 +55,7 @@ Plug 'tpope/vim-surround'
 " Pairs of handy bracket mappings
 Plug 'tpope/vim-unimpaired'
 " Helps to end certain structures automatically.
+" This conficts with coc.nvim <CR> mapping!
 " Plug 'tpope/vim-endwise'
 " Shows a git diff in the 'gutter'
 Plug 'airblade/vim-gitgutter'
@@ -86,12 +88,12 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'mhinz/vim-grepper'
 " Add some sugar to netrw
 Plug 'tpope/vim-vinegar'
-"" Auto tag file regeneration
+" Auto tag file regeneration
 "Plug 'ludovicchabant/vim-gutentags'
 
-"" -- General Programming Language Support
+" -- General Programming Language Support
 " Intellisense engine. Requires Nodejs.
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " A vim plugin for syntax highlighting Ansible's common filetypes
 Plug 'pearofducks/ansible-vim', {'do': './Ultisnips/generate.sh'}
 " Multilanguage vim test runner
@@ -114,7 +116,7 @@ Plug 'dense-analysis/ale'
 " Run a command and show it's results quickly
 Plug 'thinca/vim-quickrun'
 
-"" -- Elixir/Phoenix Language Support
+" -- Elixir/Phoenix Language Support
 
 " uses alchemist-server to give inside information 
 " about your elixir project in vim.
@@ -127,14 +129,14 @@ Plug 'thinca/vim-quickrun'
 " -- Javascript Language Support
 
 " Exposes additional tern functionality inside nvim
-"" such as :TernDefPreview
-"" Plug ternjs/tern_for_vim
-"" deoplete.nvim source for javascript
-"" FT Plugin for Javascript and JSX
-"" Plug 'othree/yajs.vim' 
-"" Syntax for javascript libraries
-"" Plug 'othree/javascript-libraries-syntax.vim'
-"" Plug 'neoclide/vim-jsx-improve'
+" such as :TernDefPreview
+" Plug ternjs/tern_for_vim
+" deoplete.nvim source for javascript
+" FT Plugin for Javascript and JSX
+" Plug 'othree/yajs.vim' 
+" Syntax for javascript libraries
+" Plug 'othree/javascript-libraries-syntax.vim'
+" Plug 'neoclide/vim-jsx-improve'
 " Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx'] } 
 " Typescript syntax files for Vim
 Plug 'leafgarland/typescript-vim'
@@ -142,7 +144,7 @@ Plug 'leafgarland/typescript-vim'
 Plug 'yuezk/vim-js'
 " [Vim script] JSX and TSX syntax pretty highlighting for 
 Plug 'MaxMEllon/vim-jsx-pretty'
-"" Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+" Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 " Personal Wiki
 Plug 'vimwiki/vimwiki'
     
@@ -155,36 +157,59 @@ call plug#end()
 
 
 
-"" ===============================================
+" ===============================================
 
-""    PLUGIN Configs
+"    PLUGIN Configs
 
-"" ===============================================
+" ===============================================
 
-""  --> vim-chrystalline
+"  --> vim-chrystalline
 function! StatusLine(current, width)
-  return (a:current ? crystalline#mode() . '%#Crystalline#' : '%#CrystallineInactive#')
-        \ . ' %f%h%w%m%r '
-        \ . (a:current ? '%#CrystallineFill# %{fugitive#head()} ' : '')
-        \ . (a:current ? '%#CrystallineFill# %{LinterStatus()} ' : '')
-        \ . '%=' . (a:current ? '%#Crystalline# %{&paste?"PASTE ":""}%{&spell?"SPELL ":""}' . crystalline#mode_color() : '')
-        \ . (a:width > 80 ? ' [%{&ft}] %l/%L %c%V %P ' : ' ')
+  let l:s = ''
+
+  if a:current
+    let l:s .= crystalline#mode() . crystalline#right_mode_sep('')
+  else
+    let l:s .= '%#CrystallineInactive#'
+  endif
+  let l:s .= ' %f%h%w%m%r '
+  if a:current
+    let l:s .= crystalline#right_sep('', 'Fill') . ' %{fugitive#head()}'
+  endif
+
+  let l:s .= '%='
+  if a:current
+    let l:s .= crystalline#left_sep('', 'Fill') . ' %{LinterStatus()} '
+  endif
+
+  if a:current
+    let l:s .= ' %{&paste ?"PASTE ":""}%{&spell?"SPELL ":""}'
+    let l:s .= crystalline#left_mode_sep('')
+  endif
+  if a:width > 80
+    let l:s .= ' [%{&ft}] %l/%L %c%V %P '
+    " let l:s .= ' %{&ft}[%{&fenc!=#""?&fenc:&enc}][%{&ff}] %l/%L %c%V %P '
+  else
+    let l:s .= ' '
+  endif
+
+  return l:s
 endfunction
- 
+
 function! TabLine()
-  let l:vimlabel = "Jerry Shockley"
+  let l:vimlabel = 'Jerry Shockley'
   return crystalline#bufferline(2, len(l:vimlabel), 1) . '%=%#CrystallineTab# ' . l:vimlabel
 endfunction
 
 let g:crystalline_statusline_fn = 'StatusLine'
 let g:crystalline_tabline_fn = 'TabLine'
 let g:crystalline_theme = 'papercolor'
-
+let g:crystalline_enable_sep = 1
 set showtabline=2
 set laststatus=2
 
 
-"" --> vim-fugitive
+" --> vim-fugitive
 nnoremap <leader>gs :Gstatus<cr>
 nnoremap <leader>gc :Gcommit<cr>
 nnoremap <leader>gp :Gpush<cr>
@@ -192,13 +217,13 @@ nnoremap <leader>gl :Gpull<cr>
 
 augroup fugitive
   autocmd!  
-  " Deletes buffers when you leave while browsing git
-  " objects.
+" Deletes buffers when you leave while browsing git
+" objects.
   autocmd BufReadPost fugitive://* set bufhidden=delete
 
-  " Presing c will jump to the commit object for the 
-  " current tree when the current buffer contains a tree or
-  " blob.
+" Presing c will jump to the commit object for the 
+" current tree when the current buffer contains a tree or
+" blob.
     autocmd User fugitive 
       \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
       \   nnoremap <buffer> .. :edit %:h<CR> |
@@ -206,13 +231,13 @@ augroup fugitive
 augroup END
 
 
-""" --> Emmet
+" --> Emmet
 
 let g:user_emmet_leader_key=','
 let g:jsx_ext_required = 0
 
 
-""" -->  vim-grepper
+" -->  vim-grepper
 
 let g:grepper = {}
 let g:grepper.tools = ['grep', 'git', 'rg'] 
@@ -223,11 +248,11 @@ nnoremap <Leader>* :Grepper -cword -noprompt<CR>
 nnoremap gs <plug>(GrepperOperator)
 xmap gs <plug>(GrepperOperator)
 
-call SetupCommandAlias("grep", "GrepperGrep")
-call SetupCommandAlias("git", "GrepperGit")
-call SetupCommandAlias("rg", "GrepperRg")
+call SetupCommandAlias('grep', 'GrepperGrep')
+call SetupCommandAlias('git', 'GrepperGit')
+call SetupCommandAlias('rg', 'GrepperRg')
 
-""" -->  Denite
+" -->  Denite
 
 " Wrap in try/catch to avoid errors on initial install before plugin is available
 try
@@ -256,7 +281,6 @@ nnoremap <leader>g :<C-u>Denite grep:. -no-empty<CR>
 "   <C-t>         - Open currently selected file ina new tab
 "   <C-v>         - Open currently selected file a vertical split
 "   <C-h>         - Open currently selected file in a horizontal split
-autocmd FileType denite-filter call s:denite_filter_my_settings()
 function! s:denite_filter_my_settings() abort
   imap <silent><buffer> <C-o>
   \ <Plug>(denite_filter_quit)
@@ -283,7 +307,10 @@ endfunction
 "   <C-t>       - Open currently selected file in a new tab
 "   <C-v>       - Open currently selected file a vertical split
 "   <C-h>       - Open currently selected file in a horizontal split
-autocmd FileType denite call s:denite_my_settings()
+augroup denite
+  autocmd FileType denite call s:denite_my_settings()
+  autocmd FileType denite-filter call s:denite_filter_my_settings()
+augroup end
 function! s:denite_my_settings() abort
   nnoremap <silent><buffer><expr> <CR>
   \ denite#do_map('do_action')
@@ -309,7 +336,7 @@ endfunction
 
 call denite#custom#var('file/rec', 'command', ['rg', '--files', '--glob', '!.git'])
 
-" Use ripgrep in place of "grep"
+" Use ripgrep in place of 'grep'
 call denite#custom#var('grep', 'command', ['rg', '--threads', '1'])
 
 " Custom options for ripgrep
@@ -342,7 +369,7 @@ let s:denite_options = {'default' : {
 \ 'start_filter': 1,
 \ 'auto_resize': 1,
 \ 'source_names': 'short',
-\ 'prompt': 'λ ',
+\ 'prompt': '> ',
 \ 'highlight_matched_char': 'QuickFixLine',
 \ 'highlightmatched_range': 'Visual',
 \ 'highlight_window_background': 'Visual',
@@ -365,16 +392,21 @@ catch
   echo 'Denite not installed. It should work after running :PlugInstall'
 endtry
 
-"""  --> ALE
+"  --> ALE
 nnoremap <silent> <leader>j  :ALENextWrap<CR>
 nnoremap <silent> <leader>k  :ALEPreviousWrap<CR>
 
 let g:ale_lint_on_enter = 0
 let g:ale_lint_on_save = 1
 let g:ale_lint_sign_error = 'X'
+let g:ale_lint_sign_warning = '>'
 let g:ale_set_quickfix = 0
 let g:ale_set_loclist = 1
 
+let g:ale_linters = { 
+\   'yaml': ['eslint'],
+\   'ansible': ['ansbile-lint']
+\   }
 let g:ale_linter_aliases = {
  \   'javascriptreact': 'css'
  \}
@@ -394,14 +426,14 @@ function! LinterStatus() abort
     let l:all_errors = l:counts.error + l:counts.style_error
     let l:all_non_errors = l:counts.total - l:all_errors
     return l:counts.total == 0 ? 'OK' : printf(
-    \  "%dW  %dE",
-    \  all_non_errors,
-    \  all_errors
+    \  '%dE  %dW',
+    \  all_errors,
+    \  all_non_errors
     \)
 endfunction
 
 
-""" --> vim-livedown
+" --> vim-livedown
 " should markdown preview get shown automatically upon opening markdown buffer
 let g:livedown_autorun = 1
 
@@ -412,14 +444,14 @@ let g:livedown_open = 1
 let g:livedown_port = 1337
 
 " the browser to use, can also be firefox, chrome or other, depending on your executable
-let g:livedown_browser = "chrome"
+let g:livedown_browser = 'chrome'
 
 
-""" -->  vinegar.vim
+" -->  vinegar.vim
 let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
 
 
-""" --> coc.nvim
+" --> coc.nvim
 let g:coc_global_extensions = [
   \ 'coc-snippets',
   \ 'coc-tsserver',
@@ -440,21 +472,21 @@ let g:coc_global_extensions = [
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 " This mapping is subsumed by coc-snippets mapping in the coc-snippets section.
 " inoremap <silent><expr> <TAB>
-"       \ pumvisible() ? "\<C-n>" :
-"       \ <SID>check_back_space() ? "\<TAB>" :
+"       \ pumvisible() ? '\<C-n>' :
+"       \ <SID>check_back_space() ? '\<TAB>' :
 "       \ coc#refresh()
 
 
 
 " Use Shift-<TAB> for trigger completion
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr><S-TAB> pumvisible() ? '\<C-p>' : '\<C-h>'
 
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-"" Use <c-space> to trigger completion.
+" Use <c-space> to trigger completion.
 " inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
@@ -499,9 +531,9 @@ nnoremap <leader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
-  " Setup formatexpr specified filetype(s).
+" Setup formatexpr specified filetype(s).
   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder
+" Update signature help on jump placeholder
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
@@ -556,167 +588,26 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
-""  --> Coc-Snippets
+"  --> Coc-Snippets
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
+      \ pumvisible() ? '\<C-n>' :
+      \ coc#expandableOrJumpable() ? '\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>' :
+      \ <SID>check_back_space() ? '\<TAB>' :
       \ coc#refresh()
 
 let g:coc_snippet_next = '<tab>'
 
-" " Use <C-l> for trigger snippet expand.
+" Use <C-l> for trigger snippet expand.
 imap <C-l> <Plug>(coc-snippets-expand)
 
 " Use <C-j> for select text for visual placeholder of snippet.
 vmap <C-j> <Plug>(coc-snippets-select)
 
-" " Use <C-j> for jump to next placeholder, it's default of coc.nvim
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
 let g:coc_snippet_next = '<c-j>'
 
-" " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
 let g:coc_snippet_prev = '<c-k>'
 
-" " Use <C-j> for both expand and jump (make expand higher priority.)
+" Use <C-j> for both expand and jump (make expand higher priority.)
 imap <C-j> <Plug>(coc-snippets-expand-jump)
-
-
-
-""" --> vim-clevertab
-"" inoremap <silent><tab> <c-r>=CleverTab#Complete('start')<cr>
-""                       \<c-r>=CleverTab#Complete('tab')<cr>
-""                       \<c-r>=CleverTab#Complete('neosnippet')<cr>
-""                       \<c-r>=CleverTab#Complete('keyword')<cr>
-""                       \<c-r>=CleverTab#Complete('omni')<cr>
-""                       \<c-r>=CleverTab#Complete('deoplete')<cr>
-""                       \<c-r>=CleverTab#Complete('stop')<cr>
-"" inoremap <silent><s-tab> <c-r>=CleverTab#Complete('prev')<cr>
-""" --> vim-test
-
-
-""" --> FZF
-"" nnoremap <C-p> :<C-u>FZF<CR>
-"" command! -bang -nargs=? -complete=dir Files
-""     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
-
-"" function! RipgrepFzf(query, fullscreen)
-""   let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
-""   let initial_command = printf(command_fmt, shellescape(a:query))
-""   let reload_command = printf(command_fmt, '{q}')
-""   let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-""   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-"" endfunction
-
-"" command! -nargs=* -bang Rg call RipgrepFzf(<q-args>, <bang>0)
-
-
-""" --> LightLine status line
-"let g:lightline = {
-"      \ 'colorscheme': 'solarized',
-"      \   'active': {
-"      \   'left': [ [ 'mode', 'paste' ],
-"      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
-"      \   'right': [ ['syntastic', 'lineinfo'],
-"      \              ['percent'],
-"      \              ['fileformat', 'fileencoding', 'filetype'] ], 
-"      \ },
-"      \ 'component_function': {
-"      \   'gitbranch': 'fugitive#head'
-"      \ },
-"      \ }
-
-
-""" --> NeoSnippet
-"" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-"" imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-"" smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-"" xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-"" " Load custom snippets from snippets folder
-"" let g:neosnippet#snippets_directory='~/.config/nvim/snippets'
-
-"" Hide conceal markers
-"" let g:neosnippet#enable_conceal_markers = 0
-
-"" Enable omni completion.
-"" autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-"" autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-"" autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-"" autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-"" autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-"" Tern 
-"" Set bin if you have many instalations
-"" let g:deoplete#sources#ternjs#tern_bin = '/path/to/tern_bin'
-"" let g:deoplete#sources#ternjs#timeout = 1
-
-""" Whether to include the types of the completions in the result data. Default: 0
-""let g:deoplete#sources#ternjs#types = 1
-
-""" Whether to include the distance (in scopes for variables, in prototypes for 
-""" properties) between the completions and the origin position in the result 
-""" data. Default: 0
-""let g:deoplete#sources#ternjs#depths = 1
-
-""" Whether to include documentation strings (if found) in the result data.
-""" Default: 0
-""let g:deoplete#sources#ternjs#docs = 1
-
-""" When on, only completions that match the current word at the given point will
-""" be returned. Turn this off to get all results, so that you can filter on the 
-""" client side. Default: 1
-""let g:deoplete#sources#ternjs#filter = 0
-
-""" Whether to use a case-insensitive compare between the current word and 
-""" potential completions. Default 0
-""let g:deoplete#sources#ternjs#case_insensitive = 1
-
-""" When completing a property and no completions are found, Tern will use some 
-""" heuristics to try and return some properties anyway. Set this to 0 to 
-""" turn that off. Default: 1
-""let g:deoplete#sources#ternjs#guess = 0
-
-""" Determines whether the result set will be sorted. Default: 1
-""let g:deoplete#sources#ternjs#sort = 0
-
-""" When disabled, only the text before the given position is considered part of 
-""" the word. When enabled (the default), the whole variable name that the cursor
-""" is on will be included. Default: 1
-""let g:deoplete#sources#ternjs#expand_word_forward = 0
-
-""" Whether to ignore the properties of Object.prototype unless they have been 
-""" spelled out by at least two characters. Default: 1
-""let g:deoplete#sources#ternjs#omit_object_prototype = 0
-
-""" Whether to include JavaScript keywords when completing something that is not 
-""" a property. Default: 0
-""let g:deoplete#sources#ternjs#include_keywords = 1
-
-""" If completions should be returned when inside a literal. Default: 1
-""let g:deoplete#sources#ternjs#in_literal = 0
-
-
-"""Add extra filetypes
-""let g:deoplete#sources#ternjs#filetypes = [
-""                \ 'jsx',
-""                \ 'javascript.jsx',
-""                \ 'vue',
-""                \ '...'
-""                \ ]
-""" If you are using tern_for_vim, you also want to use the same tern command 
-""" with deoplete-ternjs
-
-""" Use tern_for_vim.
-""let g:tern#command = ["tern"]
-""let g:tern#arguments = ["--persistent"]
-
-
-""" --> vim-gutentags
-"let g:gutentags_cache_dir = stdpath('data'). '/site/tags_cache'
-
-
-
-""" --> Alchemist.vim
-"let g:alchemist#elixir_erlang_src = "/usr/local/share/src"
-"let g:alchemist_tag_disable = 1
-
