@@ -4,8 +4,8 @@
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
 
-let mapleader = ","
-let g:mapleader = ","
+let mapleader = ','
+let g:mapleader = ','
 
 " Replace characterwise repeat character ',' with '/'
 nnoremap \ ,
@@ -41,7 +41,6 @@ nnoremap <silent> <PageDown> 1000<C-D>
 inoremap <silent> <PageUp> <C-O>1000<C-U>
 inoremap <silent> <PageDown> <C-O>1000<C-D>
 
-
 " Quicker window movement without the C-w
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
@@ -64,7 +63,6 @@ if bufwinnr(1)
   noremap <leader>- <C-W><5
 endif
 
-
 """"""""""""""""""""""""""""""
 " => Visual mode related 
 """"""""""""""""""""""""""""""
@@ -72,7 +70,6 @@ endif
 " Super useful! From an idea by Michael Naumann
 vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings 
@@ -82,7 +79,6 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 nnoremap <silent> <leader>, :noh<cr>
 " Toggle relativenumbers
 nnoremap <C-n> call NumberToggle()<cr>
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking 
@@ -96,7 +92,6 @@ nnoremap <leader>sp [s
 nnoremap <leader>sa zg
 nnoremap <leader>s? z=
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Misc 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -105,12 +100,8 @@ nnoremap <leader>s? z=
 " nnoremap <leader>t :call RunTestFile()<cr>
 " nnoremap <leader>T :call RunNearestTest()<cr>
 
-
-
-nnoremap <silent> <leader>ai :e ~/src/dotfiles/init.vim<CR>
-" nnoremap <silent> <leader>ap :e 
-" nnoremap <silent> <leader>as :source $MYVIMRC
-
+" Remove multiple empty lines from file leaving only one.
+nnoremap <silent> <leader>rl :%s/\(\n\n\)\n\+/\1/g<CR>
 " Fast saving
 nnoremap <leader>w :w!<cr>
 
@@ -134,7 +125,6 @@ nnoremap <silent> <PageDown> 1000<C-D>
 inoremap <silent> <PageUp> <C-O>1000<C-U>
 inoremap <silent> <PageDown> <C-O>1000<C-D>
 
-
 " Quicker window movement without the C-w
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
@@ -157,7 +147,6 @@ if bufwinnr(1)
   noremap <leader>- <C-W><5
 endif
 
-
 """"""""""""""""""""""""""""""
 " => Visual mode related 
 """"""""""""""""""""""""""""""
@@ -165,7 +154,6 @@ endif
 " Super useful! From an idea by Michael Naumann
 vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings 
@@ -175,7 +163,6 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 nnoremap <silent> <leader>, :noh<cr>
 " Toggle relativenumbers
 nnoremap <C-n> call NumberToggle()<cr>
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking 
@@ -189,7 +176,6 @@ nnoremap <leader>sp [s
 nnoremap <leader>sa zg
 nnoremap <leader>s? z=
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Misc 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -197,6 +183,5 @@ nnoremap <leader>s? z=
 " run test runner
 " nnoremap <leader>t :call RunTestFile()<cr>
 " nnoremap <leader>T :call RunNearestTest()<cr>
-
 
 

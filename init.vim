@@ -56,12 +56,12 @@ let afterplugin_dir = stdpath('config') . '/after/plugin'
 
 " Ensure the plugged and $XDG_DATA_HOME directories exist.
 if !isdirectory(plugged_dir)
-    call mkdir(plugged_dir, "p", 0766)
+    call mkdir(plugged_dir, 'p', 0766)
 endif
 
 " Ensure the afterplugin_dir directory exist.
 if !isdirectory(afterplugin_dir)
-    call mkdir(afterplugin_dir, "p", 0766)
+    call mkdir(afterplugin_dir, 'p', 0766)
 endif
 
 " Append after/plugin dir to rtp to ensure
@@ -86,10 +86,7 @@ let commands_file = stdpath('config') . '/commands.vim'
 let plugins_file = stdpath('config') . '/plugins.vim'
 let key_mappings_file = stdpath('config') . '/key_mappings.vim'
 
-"" Set not vi compatible as this limits our features.
-set nocompatible
-
-"" Source all configuration files.
+"Source all configuration files.
 execute 'source ' . commands_file
 execute 'source ' . plugins_file
 execute 'source ' . key_mappings_file
@@ -148,8 +145,8 @@ set splitright
 " Show incomplete commands
 set showcmd
 " Show line numbers
-set rnu
-set nu
+set relativenumber
+set number
 " Set number column size
 set numberwidth=6
 "Always show current position
@@ -159,7 +156,7 @@ set cmdheight=2
 " :how matching brackets when text indicator is over them
 set showmatch 
 " How many tenths of a second to blink when matching brackets
-set mat=5
+set matchtime=5
 " Avoid garbled characters in Chinese language windows OS
 let $LANG='en' 
 set langmenu=en
@@ -167,13 +164,13 @@ set langmenu=en
 set wildmenu
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
-if has("win16") || has("win32")
+if has('win16') || has('win32')
     set wildignore+=.git\*,.hg\*,.svn\*
 else
     set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
 endif
 " A buffer becomes hidden when it is abandoned
-set hid
+set hidden
 
 " This causes the left and right arrow keys, as well as h and l, to wrap 
 " when used at beginning or end of lines. (  < > are the cursor keys used
@@ -201,8 +198,7 @@ set magic
 " No annoying sound on errors
 set noerrorbells
 set novisualbell
-set t_vb=
-set tm=500
+set timeoutlen=300
 
 " Add a bit extra margin to the left
 set foldcolumn=2
@@ -214,7 +210,7 @@ let g:python3_host_prog = '/Users/jerrys/.asdf/shims/python3'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Turn backup off, since most stuff is in Git, git etc anyway...
 set nobackup
-set nowb
+set nowritebackup
 set noswapfile
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -227,19 +223,17 @@ set expandtab
 set smarttab
 
 " Linebreak on 100 characters
-set lbr
-set tw=100
-
-set ai "Auto indent
-set si "Smart indent
-set wrap "Wrap lines
+set linebreak
+set textwidth=80
+"Wrap lines
+set wrap 
 
 " Let 'tl' toggle between this and the last accessed tab
 let g:lasttab = 1
 " Specify the behavior when switching between buffers 
 try
   set switchbuf=useopen
-  set stal=2
+  set showtablline=2
 catch
 endtry
 
@@ -252,14 +246,13 @@ set termguicolors
 " Colorscheme
 " set background=dark
 " Don't try and set colorscheme before the plugin is installed.
-if match(&rtp, 'oceanic-next') != -1
+if match(&runtimepath, 'oceanic-next') != -1
     colorscheme OceanicNext
 endif
 
 " TMux: Automatically Change cursor shape to indicate which mode we're in.
-" let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-" let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
-" let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+" let &t_SI = '\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\' let &t_SR = '\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\'
+" let &t_EI = '\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\'
 
 " Set status line display
 " set statusline=%F%m%r%h%w\ \ [%Y]\ [%l,%v]\ [%p%%]\ [B=%n]\ %{strftime('%y-%m-%d')}\ %{strftime('%H:%M:%S')} 
