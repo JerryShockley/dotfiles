@@ -1,6 +1,9 @@
 {
   "snippets.userSnippetsDirectory": "$XDG_CONFIG_HOME/nvim/snippets",
-  "coc.preferences.diagnostic.displayByAle": true,
+  "diagnostic.displayByAle": true,
+  "diagnostic.enable": false,
+  "suggest.noselect": false,
+  "suggest.enablePreselect": false,
   "snippets.extends": {
     "javascriptreact": ["javascript"],
     "typescriptreact": ["javascript"],
