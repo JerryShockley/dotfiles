@@ -1,5 +1,6 @@
 .DS_Store
 Session.vim
+test-config.vim
 .netrwhist
 /.git/
 /.vagrant/
