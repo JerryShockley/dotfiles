@@ -19,7 +19,10 @@ nnoremap <silent> <leader>ac :exe 'e ' . commands_file  . '<CR>'
 nnoremap <silent> <leader>ap :exe 'e ' . plugins_file  . '<CR>'
 
 " Fast saving
-nnoremap <leader>w :w!<cr>
+nnoremap <silent> <leader>w :wall<CR>
+" Fast closing buffer and window
+nnoremap <silent> <leader>b :bw<CR>
+nnoremap <silent> <leader>q :quit<CR>
 
 " Optional key sequence to enter normal mode from insert mode.
 inoremap jj <Esc>
@@ -102,8 +105,6 @@ nnoremap <leader>s? z=
 
 " Remove multiple empty lines from file leaving only one.
 nnoremap <silent> <leader>rl :%s/\(\n\n\)\n\+/\1/g<CR>
-" Fast saving
-nnoremap <leader>w :w!<cr>
 
 " Optional key sequence to enter normal mode from insert mode.
 inoremap jj <Esc>
@@ -162,7 +163,7 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 " Turn off search results highlighting 
 nnoremap <silent> <leader>, :noh<cr>
 " Toggle relativenumbers
-nnoremap <C-n> call NumberToggle()<cr>
+nnoremap <leader>tr call NumberToggle()<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking 
