@@ -191,10 +191,10 @@ set laststatus=2
 
 
 " --> vim-fugitive
-nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gc :Gcommit<CR>
-nnoremap <leader>gp :Gpush<CR>
-nnoremap <leader>gl :Gpull<CR>
+nnoremap <leader>gs :G<CR>
+nnoremap <leader>gc :G commit<CR>
+nnoremap <leader>gp :Git_push<CR>
+nnoremap <leader>gl :G pull<CR>
 
 " augroup myfugitive
 "   autocmd!  
