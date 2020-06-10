@@ -9,6 +9,7 @@ if empty(glob(stdpath('data') . '/site/autoload/plug.vim'))
     let plugdir = stdpath('data') . '/site/autoload/plug.vim'  
    silent execute '!curl -fLo '. plugdir .' --create-dirs '. plugurl  
    augroup pluginstall
+     autocmd!
      autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
    augroup end
 endif
@@ -88,31 +89,23 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'mhinz/vim-grepper'
 " Add some sugar to netrw
 Plug 'tpope/vim-vinegar'
-" Auto tag file regeneration
-"Plug 'ludovicchabant/vim-gutentags'
 
 " -- General Programming Language Support
 " Intellisense engine. Requires Nodejs.
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " A vim plugin for syntax highlighting Ansible's common filetypes
 Plug 'pearofducks/ansible-vim', {'do': './Ultisnips/generate.sh'}
-" Multilanguage vim test runner
-"Plug 'janko-m/vim-test'
-" A collection of Programming Language Packs for most languagesk40
-"Plug 'sheerun/vim-polyglot'
 " Check syntax in Vim asynchronously and fix files, with Language 
 " Server Protocol (LSP) support
 Plug 'dense-analysis/ale'
 " Dark powered asynchronous completion framework for neovim/Vim8
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } 
-" Tiny replacement for Supertab
-" Plug 'neitanod/vim-clevertab'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } 
 " neo-snippet plugin contains neocomplcache snippets source
-" Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet.vim'
 " The standard snippets repository for neosnippet
-" Plug 'Shougo/neosnippet-snippets'
+Plug 'Shougo/neosnippet-snippets'
 " A code formatter plugin
-" Plug 'sbdchd/neoformat'
+Plug 'sbdchd/neoformat'
 " Run a command and show it's results quickly
 Plug 'thinca/vim-quickrun'
 
@@ -128,25 +121,14 @@ Plug 'thinca/vim-quickrun'
 
 " -- Javascript Language Support
 
-" Exposes additional tern functionality inside nvim
-" such as :TernDefPreview
-" Plug ternjs/tern_for_vim
-" deoplete.nvim source for javascript
-" FT Plugin for Javascript and JSX
-" Plug 'othree/yajs.vim' 
-" Syntax for javascript libraries
-" Plug 'othree/javascript-libraries-syntax.vim'
-" Plug 'neoclide/vim-jsx-improve'
-" Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx'] } 
 " Typescript syntax files for Vim
-Plug 'leafgarland/typescript-vim'
-" The most accurate syntax highlighting plugin for JavaScript and Flow.js
-Plug 'yuezk/vim-js'
+Plug 'HerringtonDarkholme/yats.vim'
 " [Vim script] JSX and TSX syntax pretty highlighting for 
 Plug 'MaxMEllon/vim-jsx-pretty'
 " Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 " Personal Wiki
 Plug 'vimwiki/vimwiki'
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
     
 " -- Color Schemes
 Plug 'mhartington/oceanic-next'
@@ -179,7 +161,7 @@ function! StatusLine(current, width)
 
   let l:s .= '%='
   if a:current
-    let l:s .= crystalline#left_sep('', 'Fill') . ' %{LinterStatus()} '
+    let l:s .= crystalline#left_sep('', 'Fill') . ' %{LinterStatus()}'
   endif
 
   if a:current
@@ -188,7 +170,6 @@ function! StatusLine(current, width)
   endif
   if a:width > 80
     let l:s .= ' [%{&ft}] %l/%L %c%V %P '
-    " let l:s .= ' %{&ft}[%{&fenc!=#""?&fenc:&enc}][%{&ff}] %l/%L %c%V %P '
   else
     let l:s .= ' '
   endif
@@ -198,7 +179,7 @@ endfunction
 
 function! TabLine()
   let l:vimlabel = 'Jerry Shockley'
-  return crystalline#bufferline(2, len(l:vimlabel), 1) . '%=%#CrystallineTab# ' . l:vimlabel
+  return crystalline#bufferline(2, len(l:vimlabel), 1) . '%=%#CrystallineTab# ' . '%=%{ObsessionStatus()}'
 endfunction
 
 let g:crystalline_statusline_fn = 'StatusLine'
@@ -210,31 +191,38 @@ set laststatus=2
 
 
 " --> vim-fugitive
-nnoremap <leader>gs :Gstatus<cr>
-nnoremap <leader>gc :Gcommit<cr>
-nnoremap <leader>gp :Gpush<cr>
-nnoremap <leader>gl :Gpull<cr>
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gc :Gcommit<CR>
+nnoremap <leader>gp :Gpush<CR>
+nnoremap <leader>gl :Gpull<CR>
 
-augroup fugitive
-  autocmd!  
+" augroup myfugitive
+"   autocmd!  
 " Deletes buffers when you leave while browsing git
 " objects.
-  autocmd BufReadPost fugitive://* set bufhidden=delete
+  " autocmd BufReadPost fugitive://* set bufhidden=delete
 
 " Presing c will jump to the commit object for the 
 " current tree when the current buffer contains a tree or
 " blob.
-    autocmd User fugitive 
-      \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
-      \   nnoremap <buffer> .. :edit %:h<CR> |
-      \ endif
-augroup END
+    " autocmd User fugitive 
+    "   \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
+    "   \   nnoremap <buffer> .. :edit %:h<CR> |
+    "   \ endif
+" augroup END
 
 
 " --> Emmet
 
 let g:user_emmet_leader_key=','
 let g:jsx_ext_required = 0
+
+let g:user_emmet_settings = {
+  \  'javascriptreact' : {
+    \      'extends' : 'jsx',
+    \  },
+  \ }
+
 
 
 " -->  vim-grepper
@@ -281,6 +269,8 @@ nnoremap <leader>g :<C-u>Denite grep:. -no-empty<CR>
 "   <C-t>         - Open currently selected file ina new tab
 "   <C-v>         - Open currently selected file a vertical split
 "   <C-h>         - Open currently selected file in a horizontal split
+" vint: -ProhibitAutocmdWithNoGroup
+autocmd FileType denite-filter call s:denite_filter_my_settings()
 function! s:denite_filter_my_settings() abort
   imap <silent><buffer> <C-o>
   \ <Plug>(denite_filter_quit)
@@ -288,7 +278,7 @@ function! s:denite_filter_my_settings() abort
   \ denite#do_map('quit')
   nnoremap <silent><buffer><expr> <Esc>
   \ denite#do_map('quit')
-  inoremap <silent><buffer><expr> <CR>
+  inoremap <silent><buffer><expr> <C-y>
   \ denite#do_map('do_action')
   inoremap <silent><buffer><expr> <C-t>
   \ denite#do_map('do_action', 'tabopen')
@@ -299,7 +289,7 @@ function! s:denite_filter_my_settings() abort
 endfunction
 
 " Define mappings while in denite window
-"   <CR>        - Opens currently selected file
+" <CR>        - Opens currently selected file
 "   q or <Esc>  - Quit Denite window
 "   d           - Delete currenly selected file
 "   p           - Preview currently selected file
@@ -307,10 +297,8 @@ endfunction
 "   <C-t>       - Open currently selected file in a new tab
 "   <C-v>       - Open currently selected file a vertical split
 "   <C-h>       - Open currently selected file in a horizontal split
-augroup denite
-  autocmd FileType denite call s:denite_my_settings()
-  autocmd FileType denite-filter call s:denite_filter_my_settings()
-augroup end
+" vint: -ProhibitAutocmdWithNoGroup
+autocmd FileType denite call s:denite_my_settings()
 function! s:denite_my_settings() abort
   nnoremap <silent><buffer><expr> <CR>
   \ denite#do_map('do_action')
@@ -398,21 +386,27 @@ nnoremap <silent> <leader>k  :ALEPreviousWrap<CR>
 
 let g:ale_lint_on_enter = 0
 let g:ale_lint_on_save = 1
-let g:ale_lint_sign_error = 'X'
-let g:ale_lint_sign_warning = '>'
+let g:ale_lint_on_insert_leave = 1
 let g:ale_set_quickfix = 0
 let g:ale_set_loclist = 1
+let g:ale_open_list = 1
+" highlight ALEErrorSign ctermbg=NONE ctermfg=red
+" highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
+" let g:ale_linters_ignore = {
+" \ 'vim': ['vim_language_server']    
+" \ }
 
 let g:ale_linters = { 
-\   'yaml': ['eslint'],
-\   'ansible': ['ansbile-lint']
+\   'yaml': ['yamllint'],
+\   'javascriptreact': ['stylelint', 'eslint'],
+\   'ansible': ['ansbile-lint', 'yamllint']
 \   }
 let g:ale_linter_aliases = {
  \   'javascriptreact': 'css'
  \}
 
 let g:ale_fixers = {
-\    'javascript': ['eslint'],
+\    'javascript': ['prettier'],
 \    'typescript': ['prettier'],
 \    'vue': ['eslint'],
 \    'scss': ['prettier'],
@@ -431,6 +425,12 @@ function! LinterStatus() abort
     \  all_non_errors
     \)
 endfunction
+
+
+" --> Obsession
+
+nnoremap <silent> <leader>o :Obsession<CR>
+nnoremap <silent> <leader>ok :Obsession!<CR>
 
 
 " --> vim-livedown
@@ -454,9 +454,6 @@ let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
 " --> coc.nvim
 let g:coc_global_extensions = [
   \ 'coc-snippets',
-  \ 'coc-tsserver',
-  \ 'coc-eslint', 
-  \ 'coc-prettier', 
   \ 'coc-json',
   \ 'coc-html',
   \ 'coc-css',
@@ -477,9 +474,9 @@ let g:coc_global_extensions = [
 "       \ coc#refresh()
 
 
-
 " Use Shift-<TAB> for trigger completion
-inoremap <expr><S-TAB> pumvisible() ? '\<C-p>' : '\<C-h>'
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<Tab>"
 
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -487,15 +484,15 @@ function! s:check_back_space() abort
 endfunction
 
 " Use <c-space> to trigger completion.
-" inoremap <silent><expr> <c-space> coc#refresh()
+inoremap <silent><expr> <c-space> coc#refresh()
 
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" Use <CR> to confirm completion, `<C-g>u` means break undo chain at current
 " position. Coc only does snippet and additional edit on confirm.
-" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+" <CR> could be remapped by other vim plugin, try `:verbose imap <CR>`.
 if exists('*complete_info')
   inoremap <expr><CR> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 else
-  inoremap <expr><cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+  inoremap <expr><CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
 
 " Use `[g` and `]g` to navigate diagnostics
@@ -532,7 +529,7 @@ nnoremap <leader>f  <Plug>(coc-format-selected)
 augroup mygroup
   autocmd!
 " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
 " Update signature help on jump placeholder
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
@@ -572,15 +569,15 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 
 " Using CocList
 " Show all diagnostics
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<CR>
 " Manage extensions
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+nnoremap <silent> <space>e  :<C-u>CocList extensions<CR>
 " Show commands
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+nnoremap <silent> <space>c  :<C-u>CocList commands<CR>
 " Find symbol of current document
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+nnoremap <silent> <space>o  :<C-u>CocList outline<CR>
 " Search workspace symbols
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<CR>
 " Do default action for next item.
 nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 " Do default action for previous item.
@@ -590,12 +587,13 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 "  --> Coc-Snippets
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? '\<C-n>' :
-      \ coc#expandableOrJumpable() ? '\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>' :
-      \ <SID>check_back_space() ? '\<TAB>' :
+      \ pumvisible() ? "<C-n>" :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
 
 let g:coc_snippet_next = '<tab>'
+
 
 " Use <C-l> for trigger snippet expand.
 imap <C-l> <Plug>(coc-snippets-expand)
