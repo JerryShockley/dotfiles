@@ -17,9 +17,10 @@ endfunc
  
 "Delete trailing white space
 function! DeleteTrailingWS()
-  exe "normal mz"
+  exe 'normal mz'
+" vint: -ProhibitCommandRelyOnUser -ProhibitCommandWithUnintendedSideEffect
   %s/\s\+$//ge
-  exe "normal `z"
+  exe 'normal `z'
 endfunc
 
 " Returns true if paste mode is enabled. Useful for status line
@@ -33,8 +34,8 @@ endfunction
 " Don't close window, when deleting a buffer.
 " Used by command Bclose
 function! <SID>BufcloseCloseIt()
-   let l:currentBufNum = bufnr("%")
-   let l:alternateBufNum = bufnr("#")
+   let l:currentBufNum = bufnr('%')
+   let l:alternateBufNum = bufnr('#')
 
    if buflisted(l:alternateBufNum)
      buffer #
@@ -42,12 +43,12 @@ function! <SID>BufcloseCloseIt()
      bnext
    endif
 
-   if bufnr("%") == l:currentBufNum
+   if bufnr('%') == l:currentBufNum
      new
    endif
 
    if buflisted(l:currentBufNum)
-     execute("bdelete! ".l:currentBufNum)
+     execute('bdelete! '.l:currentBufNum)
    endif
 endfunction
 
