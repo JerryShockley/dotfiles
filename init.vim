@@ -114,14 +114,15 @@ set cmdheight=2
 " How many milliseconds after typing before swapfile is 
 " written. Used by LSP servers to determine frequency of
 " buffer evaluation.
-set updatetime=400
+set updatetime=300
 " Hide our abandoned buffers vs deleting them. Used by LSPs
 set hidden
 " always show signcolumns. Used by LSPs. 
 set signcolumn=yes
 " Set short message options to use short messages
 set shortmess=aFc
-
+" Save undo history between sessions. Saved to nvim_data/undo.
+set undofile
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => User interface 
