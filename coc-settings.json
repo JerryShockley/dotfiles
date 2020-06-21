@@ -1,6 +1,7 @@
 {
   "snippets.userSnippetsDirectory": "$XDG_CONFIG_HOME/nvim/snippets",
   "diagnostic.displayByAle": false,
+  "disableDiagnostics": true,
   "diagnostic.enable": false,
   "suggest.noselect": false,
   "suggest.enablePreselect": false,
