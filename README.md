@@ -71,7 +71,7 @@ no effect on your system if you aren't using tmux.
 
 1. **.gemrc** - Gem is the Ruby package manager.
 
-## Misc Config files
+## Misc configuration files
 
 1. **.ssh_ident** - Configuration file for ssh-ident script file described
 below.
