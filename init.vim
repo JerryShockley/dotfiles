@@ -1,49 +1,49 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Maintainer: 
+" Maintainer:
 "       Jerry Shockley
 "
 " This configuration file is optimized for use with Neovim
 " in the terminal. There will be significant problems if
-" attempting to use this configuration with Vim. 
-" This file is broken up into a total of 
+" attempting to use this configuration with Vim.
+" This file is broken up into a total of
 " four files in an effort to make the configuration easier
-" to work with. With the remaining three being sourced from 
+" to work with. With the remaining three being sourced from
 " this file (init.vim). The other three files are:
 "
 "       - plugins.vim
 "       - commands.vim
 "       - key_mappings.vim
 "
-" All four files must be present together in the 
-" $XDG_CONFIG_HOME/nvim directory for the source 
+" All four files must be present together in the
+" $XDG_CONFIG_HOME/nvim directory for the source
 " command to work properly for the other three.
 "
 " This file contains all settings not included in the other
 " three files. The other three files contain the following:
 "
 " plugins.vim --
-"       Contains code to create the plugin directory and 
+"       Contains code to create the plugin directory and
 "       initialize the plugins, the list of plugins used,
-"       and all plugin specific configurations including 
-"       plugin specific key mappings, commands, and 
+"       and all plugin specific configurations including
+"       plugin specific key mappings, commands, and
 "       functions.
 " commands.vim --
 "       Contains all commands and functions except those
 "       specific to a plugin.
 " key_mappings.vim --
-"       Contains all key_mappings except those specific 
+"       Contains all key_mappings except those specific
 "       to a plugin.
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => User Options 
+" => User Options
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Ensure XDG Base Directory Spec environment variables exist.
 " These are used by default in the guntime path and by
 " defining them here in init.vim using the default path shown
-" below ensures this configuration file works even if the 
+" below ensures this configuration file works even if the
 " user hasn't set the environment variables.
 if empty($XDG_CONFIG_HOME)
-    let $XDG_CONFIG_HOME = expand($HOME) . '/.config' 
+    let $XDG_CONFIG_HOME = expand($HOME) . '/.config'
 endif
 if empty($XDG_DATA_HOME)
     let $XDG_DATA_HOME = expand($HOME) . '/.local/share'
@@ -92,7 +92,7 @@ execute 'source ' . plugins_file
 execute 'source ' . key_mappings_file
 
 " Use system clipboard
-set clipboard=unnamed
+set clipboard+=unnamedplus
 " Sets how many lines of history VIM has to remember
 set history=800
 " Set path wildcards enable searching the dir subtree when finding files
@@ -111,13 +111,13 @@ set softtabstop=2
 set autoread
 " Set height of Ex cmd line to 2 for long commands.
 set cmdheight=2
-" How many milliseconds after typing before swapfile is 
+" How many milliseconds after typing before swapfile is
 " written. Used by LSP servers to determine frequency of
 " buffer evaluation.
 set updatetime=300
 " Hide our abandoned buffers vs deleting them. Used by LSPs
 set hidden
-" always show signcolumns. Used by LSPs. 
+" always show signcolumns. Used by LSPs.
 set signcolumn=yes
 " Set short message options to use short messages
 set shortmess=aFc
@@ -125,7 +125,7 @@ set shortmess=aFc
 set undofile
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => User interface 
+" => User interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Indent guide
 let g:indentLine_showFirstIndentLevel = 1
@@ -155,11 +155,11 @@ set ruler
 " Height of the command bar
 set cmdheight=2
 " :how matching brackets when text indicator is over them
-set showmatch 
+set showmatch
 " How many tenths of a second to blink when matching brackets
 set matchtime=5
 " Avoid garbled characters in Chinese language windows OS
-let $LANG='en' 
+let $LANG='en'
 set langmenu=en
 " Turn on the WiLd menu
 set wildmenu
@@ -173,7 +173,7 @@ endif
 " A buffer becomes hidden when it is abandoned
 set hidden
 
-" This causes the left and right arrow keys, as well as h and l, to wrap 
+" This causes the left and right arrow keys, as well as h and l, to wrap
 " when used at beginning or end of lines. (  < > are the cursor keys used
 " in normal and visual mode, and [ ] are the cursor keys in insert mode).
 set whichwrap+=<,>,b,s,[,]
@@ -181,17 +181,17 @@ set whichwrap+=<,>,b,s,[,]
 " Ignore case when searching
 set ignorecase
 
-" When searching try to be smart about cases 
+" When searching try to be smart about cases
 set smartcase
 
 " Highlight search results
 set hlsearch
 
 " Makes search act like search in modern browsers
-set incsearch 
+set incsearch
 
 " Don't redraw while executing macros (good performance config)
-set lazyredraw 
+set lazyredraw
 
 " For regular expressions turn magic on
 set magic
@@ -203,7 +203,7 @@ set timeoutlen=300
 
 " Add a bit extra margin to the left
 set foldcolumn=2
-" Set python paths 
+" Set python paths
 let g:python_host_prog = '/Users/jerrys/.asdf/shims/python2'
 let g:python3_host_prog = '/Users/jerrys/.asdf/shims/python3'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -215,7 +215,7 @@ set nowritebackup
 set noswapfile
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text, tab and indent related 
+" => Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Use spaces instead of tabs
 set expandtab
@@ -227,11 +227,11 @@ set smarttab
 set linebreak
 set textwidth=80
 "Wrap lines
-set wrap 
+set wrap
 
 " Let 'tl' toggle between this and the last accessed tab
 let g:lasttab = 1
-" Specify the behavior when switching between buffers 
+" Specify the behavior when switching between buffers
 try
   set switchbuf=useopen
   set showtablline=2
@@ -240,7 +240,7 @@ endtry
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Display 
+" => Display
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Use True Colors
 set termguicolors
@@ -256,5 +256,4 @@ endif
 " let &t_EI = '\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\'
 
 " Set status line display
-" set statusline=%F%m%r%h%w\ \ [%Y]\ [%l,%v]\ [%p%%]\ [B=%n]\ %{strftime('%y-%m-%d')}\ %{strftime('%H:%M:%S')} 
-
+" set statusline=%F%m%r%h%w\ \ [%Y]\ [%l,%v]\ [%p%%]\ [B=%n]\ %{strftime('%y-%m-%d')}\ %{strftime('%H:%M:%S')}
