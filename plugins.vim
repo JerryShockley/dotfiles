@@ -6,8 +6,8 @@
 if empty(glob(stdpath('data') . '/site/autoload/plug.vim'))
     let plugurl = 'https://raw.githubusercontent.com/' .
         \'junegunn/vim-plug/master/plug.vim'
-    let plugdir = stdpath('data') . '/site/autoload/plug.vim'  
-   silent execute '!curl -fLo '. plugdir .' --create-dirs '. plugurl  
+    let plugdir = stdpath('data') . '/site/autoload/plug.vim'
+   silent execute '!curl -fLo '. plugdir .' --create-dirs '. plugurl
    augroup pluginstall
      autocmd!
      autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
@@ -31,7 +31,7 @@ Plug 'tpope/vim-scriptease'
 Plug 'shime/vim-livedown'
 
 " -- Search Plugs
-" easily search for, substitute, and abbreviate multiple variants of a word 
+" easily search for, substitute, and abbreviate multiple variants of a word
 Plug 'tpope/vim-abolish'
 
 " -- Vim utility scripts
@@ -75,7 +75,7 @@ Plug 'mattn/emmet-vim'
 "  etc)j. As a Neovim plugin it has
 "  access to more sources than FZF, but may be a
 "  bit slower.
-Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' } 
+Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 " Add Denite sources
 " Save yank history and create source
 Plug 'Shougo/neoyank.vim'
@@ -95,11 +95,11 @@ Plug 'tpope/vim-vinegar'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " A vim plugin for syntax highlighting Ansible's common filetypes
 Plug 'pearofducks/ansible-vim', {'do': './Ultisnips/generate.sh'}
-" Check syntax in Vim asynchronously and fix files, with Language 
+" Check syntax in Vim asynchronously and fix files, with Language
 " Server Protocol (LSP) support
 Plug 'dense-analysis/ale'
 " Dark powered asynchronous completion framework for neovim/Vim8
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } 
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " neo-snippet plugin contains neocomplcache snippets source
 Plug 'Shougo/neosnippet.vim'
 " The standard snippets repository for neosnippet
@@ -111,7 +111,7 @@ Plug 'thinca/vim-quickrun'
 
 " -- Elixir/Phoenix Language Support
 
-" uses alchemist-server to give inside information 
+" uses alchemist-server to give inside information
 " about your elixir project in vim.
 " Plug 'slashmili/alchemist.vim'
 " Elixir web development framework
@@ -123,13 +123,13 @@ Plug 'thinca/vim-quickrun'
 
 " Typescript syntax files for Vim
 Plug 'HerringtonDarkholme/yats.vim'
-" [Vim script] JSX and TSX syntax pretty highlighting for 
+" [Vim script] JSX and TSX syntax pretty highlighting for
 Plug 'MaxMEllon/vim-jsx-pretty'
 " Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 " Personal Wiki
 Plug 'vimwiki/vimwiki'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-    
+
 " -- Color Schemes
 Plug 'mhartington/oceanic-next'
 " Plug 'lifepillar/vim-solarized8'
@@ -197,15 +197,15 @@ nnoremap <leader>gp :Git_push<CR>
 nnoremap <leader>gl :G pull<CR>
 
 " augroup myfugitive
-"   autocmd!  
+"   autocmd!
 " Deletes buffers when you leave while browsing git
 " objects.
   " autocmd BufReadPost fugitive://* set bufhidden=delete
 
-" Presing c will jump to the commit object for the 
+" Presing c will jump to the commit object for the
 " current tree when the current buffer contains a tree or
 " blob.
-    " autocmd User fugitive 
+    " autocmd User fugitive
     "   \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
     "   \   nnoremap <buffer> .. :edit %:h<CR> |
     "   \ endif
@@ -228,7 +228,7 @@ let g:user_emmet_settings = {
 " -->  vim-grepper
 
 let g:grepper = {}
-let g:grepper.tools = ['grep', 'git', 'rg'] 
+let g:grepper.tools = ['grep', 'git', 'rg']
 let g:grepper.jump = 1
 " Search for current word
 nnoremap <Leader>* :Grepper -cword -noprompt<CR>
@@ -320,7 +320,7 @@ function! s:denite_my_settings() abort
   \ denite#do_map('do_action', 'vsplit')
   nnoremap <silent><buffer><expr> <C-h>
   \ denite#do_map('do_action', 'split')
-endfunction 
+endfunction
 
 call denite#custom#var('file/rec', 'command', ['rg', '--files', '--glob', '!.git'])
 
@@ -393,10 +393,10 @@ let g:ale_open_list = 1
 " highlight ALEErrorSign ctermbg=NONE ctermfg=red
 " highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
 " let g:ale_linters_ignore = {
-" \ 'vim': ['vim_language_server']    
+" \ 'vim': ['vim_language_server']
 " \ }
 
-let g:ale_linters = { 
+let g:ale_linters = {
 \   'ansible': ['ansible-lint'],
 \   'yaml': ['yamllint'],
 \   'javascriptreact': ['stylelint', 'eslint'],
@@ -406,13 +406,14 @@ let g:ale_linters = {
 "  \   'ansible': 'yaml'
 "  \}
 
-" let g:ale_fixers = {
-" \    'javascript': ['prettier'],
-" \    'typescript': ['prettier'],
-" \    'vue': ['eslint'],
-" \    'scss': ['prettier'],
-" \    'html': ['prettier']
-" \}
+let g:ale_fixers = {
+\     '*': ['trim_whitespace', 'remove_trailing_lines'],
+\    'javascript': ['prettier'],
+\    'typescript': ['prettier'],
+\    'vue': ['eslint'],
+\    'scss': ['prettier'],
+\    'html': ['prettier']
+\}
 let g:ale_fix_on_save = 1
 
 " Calculates and formats linter summary info for statusline
@@ -544,14 +545,14 @@ nnoremap <leader>cc  <Plug>(coc-codeaction)
 " Fix autofix problem of current line
 nnoremap <leader>cf  <Plug>(coc-fix-current)
 
-" Create mappings for function text object, requires document 
+" Create mappings for function text object, requires document
 " symbols feature of languageserver.
 xmap if <Plug>(coc-funcobj-i)
 xmap af <Plug>(coc-funcobj-a)
 omap if <Plug>(coc-funcobj-i)
 omap af <Plug>(coc-funcobj-a)
 
-" Use <C-d> for select selections ranges, needs server support, 
+" Use <C-d> for select selections ranges, needs server support,
 " like: coc-tsserver, coc-python
 nnoremap <silent> <space>d <Plug>(coc-range-select)
 xmap <silent> <space>d <Plug>(coc-range-select)
