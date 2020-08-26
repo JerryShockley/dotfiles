@@ -1,0 +1,8 @@
+DEFAULT_IDENTITY = "personal"
+
+PATTERN_KEYS = r".*"
+
+MATCH_ARGV = {
+  (r"myapp", "mydev")
+  (r"jerrys", "personal")
+}
