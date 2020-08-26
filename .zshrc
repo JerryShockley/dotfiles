@@ -64,10 +64,9 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 alias ljd="lj -a"
 alias so="source ~/.zshrc"
 alias -g zrc="~/.zshrc"
-alias -g nviminit="~/.config/nvim/init.vim"
-alias -g prc="~/.zpreztorc"
-alias -g edir="~/src/elixir"
-alias -g bdir="~/src/book_code"
+alias -g deploy="~/src/deploy"
+alias -g roled="~/src/deploy/role_dev"
+alias -g dotf="~/src/dotfiles"
 
 alias al='alias | grep '
 alias rgl="rg -L --hidden"
