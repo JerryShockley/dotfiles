@@ -1,0 +1,8 @@
+#!/usr/local/bin/zsh
+outdated_list=$(pip list --outdated)
+if [[ ! -z "$outdated_list" ]]; then
+  pip install $($outdated_list | sed 1,2d | awk '{ print $1 }') --upgrade &&
+    echo 'Outdated Python packages have been updated'
+else
+  echo 'All Python packages are already up to date.'
+fi
