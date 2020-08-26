@@ -397,21 +397,22 @@ let g:ale_open_list = 1
 " \ }
 
 let g:ale_linters = { 
+\   'ansible': ['ansible-lint'],
 \   'yaml': ['yamllint'],
 \   'javascriptreact': ['stylelint', 'eslint'],
-\   'ansible': ['ansbile-lint', 'yamllint']
 \   }
-let g:ale_linter_aliases = {
- \   'javascriptreact': 'css'
- \}
+" let g:ale_linter_aliases = {
+"  \   'javascriptreact': 'css',
+"  \   'ansible': 'yaml'
+"  \}
 
-let g:ale_fixers = {
-\    'javascript': ['prettier'],
-\    'typescript': ['prettier'],
-\    'vue': ['eslint'],
-\    'scss': ['prettier'],
-\    'html': ['prettier']
-\}
+" let g:ale_fixers = {
+" \    'javascript': ['prettier'],
+" \    'typescript': ['prettier'],
+" \    'vue': ['eslint'],
+" \    'scss': ['prettier'],
+" \    'html': ['prettier']
+" \}
 let g:ale_fix_on_save = 1
 
 " Calculates and formats linter summary info for statusline
