@@ -80,6 +80,12 @@ ssh-add -A  2>/dev/null
 # add asdf competions $fpath
 fpath=($HOME/.asdf/completions $fpath)
 # . $HOME/.asdf/completions/asdf.bash
-autoload -Uz compinit && compinit
+autoload -U compinit
+
+for dump in ~/.zcompdump(N.mh+24); do
+  compinit
+done
+
+compinit -C
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
