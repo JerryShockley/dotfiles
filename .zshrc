@@ -67,7 +67,8 @@ alias -g zrc="~/.zshrc"
 alias -g deploy="~/src/deploy"
 alias -g roled="~/src/deploy/role_dev"
 alias -g dotf="~/src/dotfiles"
-
+alias ports="netstat -an | grep 'LISTEN'"
+alias vplaybook="ansible-playbook -i 'hosts.ansible'  --private-key='~/.vagrant.d/insecure_private_key' -u vagrant playbook.yml"
 alias al='alias | grep '
 alias rgl="rg -L --hidden"
 # eval `ssh-agent`
