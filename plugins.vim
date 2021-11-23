@@ -111,9 +111,13 @@ Plug 'thinca/vim-quickrun'
 
 " -- Elixir/Phoenix Language Support
 
-" uses alchemist-server to give inside information
+" Uses ElixirSense to give inside information
 " about your elixir project in vim.
-" Plug 'slashmili/alchemist.vim'
+Plug 'slashmili/alchemist.vim'
+" Syntax highlighting for Elixir and EEx files,
+" Filetype detection, auto indentation, and vim-dabod
+" integration for defined Ecto repositories.
+Plug 'elixir-editors/vim-elixir'
 " Elixir web development framework
 " Plug 'c-brenn/phoenix.vim'
 " Project config using projections
@@ -388,7 +392,7 @@ let g:ale_lint_on_enter = 0
 let g:ale_lint_on_save = 1
 let g:ale_lint_on_insert_leave = 1
 let g:ale_set_quickfix = 0
-let g:ale_set_loclist = 1
+let g:ale_set_loclist = 0
 let g:ale_open_list = 1
 " highlight ALEErrorSign ctermbg=NONE ctermfg=red
 " highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
