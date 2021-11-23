@@ -74,3 +74,4 @@ TMPPREFIX="${TMPDIR%/}/zsh"
 
 . $HOME/.asdf/asdf.sh
 # . $HOME/.asdf/completions/asdf.bash
+eval "$(/opt/homebrew/bin/brew shellenv)"
